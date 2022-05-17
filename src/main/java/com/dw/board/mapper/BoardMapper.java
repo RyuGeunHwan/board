@@ -1,4 +1,4 @@
-package com.dw.boardmapper;
+package com.dw.board.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
