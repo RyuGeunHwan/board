@@ -1,5 +1,14 @@
 package com.dw.board.vo;
 
-public class BoardVO {
+import lombok.Data;
+
+@Data
+public class BoardVO extends StudentsVO {
+	private int boardId;
+	private String title;
+	private String content;
+	private String updateAt;
+	private String crateAt;
+
 	
 }

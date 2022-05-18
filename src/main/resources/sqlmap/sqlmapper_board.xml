@@ -1,5 +1,0 @@
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- MyBatis에게 Mapper 경로를 적어야한다. -->
-<mapper namespace="com.dw.board.mapper.BoardMapper"><!-- mapper위치 경로-->
-
-</mapper>
