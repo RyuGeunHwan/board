@@ -18,6 +18,8 @@ VALUES
 
 <select id="selectAllStudentsList" resultType="StudentsVO">
 SELECT 
+<!-- Mapper의 메소드에서 파라미터를 VO클래스로 받고 있기때문에 -->
+<!-- 별칭을 주는 이유는 studentsVO의 필드변수명과 같아야함. -->
 	students_id AS studentsId,
 	students_name AS studentsName,
 	students_password AS studentsPassword,

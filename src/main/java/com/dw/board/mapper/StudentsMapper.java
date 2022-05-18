@@ -38,5 +38,5 @@ public interface StudentsMapper {
 	
 	public int deleteStudents(int studentsId);
 	
-	public int updateStudents(@Param("id")int studentsId, StudentsVO vo);
+	public int updateStudents(StudentsVO vo);
 }
