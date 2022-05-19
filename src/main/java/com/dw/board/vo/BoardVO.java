@@ -8,7 +8,5 @@ public class BoardVO extends StudentsVO {
 	private String title;
 	private String content;
 	private String updateAt;
-	private String crateAt;
-
-	
+	private String createAt;
 }

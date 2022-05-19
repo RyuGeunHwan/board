@@ -39,4 +39,15 @@ public interface StudentsMapper {
 	public int deleteStudents(int studentsId);
 	
 	public int updateStudents(StudentsVO vo);
+	
+	
+	
+	/**
+	 * @param vo
+	 * @return : StudentsVO
+	 * @author : Geunhwan Ryu
+	 * @date : 2022. 5. 19.
+	 *comment : 학생이름으로 학생정보 조회
+	 */
+	public StudentsVO selectStudentsOne(StudentsVO vo);
 }

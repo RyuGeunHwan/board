@@ -1,0 +1,46 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- MyBatis에게 Mapper 경로를 적어야한다. -->
+<mapper namespace="com.dw.board.mapper.BoardMapper"><!-- mapper위치 경로-->
+<!-- 게시판 저장 -->
+<insert id="insertBoard">
+INSERT INTO board
+(
+title,
+content
+<if test="studentsId != 0">
+,students_id
+</if>
+)
+VALUES
+(
+#{title},
+#{content}
+<if test="studentsId != 0">
+,#{studentsId}
+</if>
+)
+<!--BoardVO의 studentsId는 FK기 때문에 기본키를 가진 student테이블에도 없는 값을 board테이블에서도 가질 수 없다.
+즉, students테이블에 있는 students_id가 있는 데이터의 값만 board테이블에서 insert할 수 있다는 것이다.
+ 마이크 M은 다음과 같이 썼다.“FK가 작동하는 방식은 해당 테이블에 참조 된 테이블의 기본 키 열에도없는 값을 가질 수 없다는 것입니다.”  -->
+</insert>
+
+
+
+<!-- 게시판 전체조회 -->
+<select id="selectBoard" resultType="BoardVO">
+SELECT
+board_id AS boardId,
+			b.students_id AS studentsId,
+			s.students_name AS studentsName,
+			s.students_password AS studentsPassword,
+			title,
+			content,
+			update_at AS updateAt,
+			b.create_at AS createAt,
+			s.create_at AS createAt
+FROM board b inner join students s
+on b.students_id = s.students_id
+</select>
+
+
+</mapper>

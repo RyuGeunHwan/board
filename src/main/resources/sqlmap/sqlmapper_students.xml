@@ -15,7 +15,7 @@ VALUES
 )
 </insert>
 
-
+<!-- 전체 학생 조회 -->
 <select id="selectAllStudentsList" resultType="StudentsVO">
 SELECT 
 <!-- Mapper의 메소드에서 파라미터를 VO클래스로 받고 있기때문에 -->
@@ -39,7 +39,7 @@ SELECT
 FROM students
 </select>
 
-
+<!-- id로 특정 학생 조회 -->
 <select id="selectStudents" resultType="StudentsVO">
 SELECT 
 	students_id AS studentsId,
@@ -66,4 +66,18 @@ SET
 WHERE 
 	students_id = #{studentsId}
 </update>
+
+<!--  -->
+<select id="selectStudentsOne" resultType="StudentsVO">
+SELECT 
+	students_id AS studentsId,
+	students_name AS studentsName,
+	students_password AS studentsPassword,
+	create_at AS createAt
+FROM students
+WHERE 
+students_name = #{studentsName}
+</select>
+
+
 </mapper>

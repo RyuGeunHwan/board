@@ -27,6 +27,15 @@ public class StudentsRestController {
 	@Autowired
 	private StudentsService studentsSevice;
 	
+	
+	// 중요한 정보를 서버에 전송할 때 POST 사용!!!
+	// DB데이터와 입력데이터를 비교하는 POST메소드
+	@CrossOrigin
+	@PostMapping("/login")
+	public boolean callIsLogin(@RequestBody StudentsVO vo) {
+		return studentsSevice.isStudents(vo);
+	}
+	
 	// post는 body로 데이터를 받는다.
 	//보안을 목적으로 하기때문에 body로 받는다.
 	// ex) password가 url에 보이면 안되기 때문에!

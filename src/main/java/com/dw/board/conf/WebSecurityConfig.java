@@ -1,4 +1,5 @@
 // Security 설정 관련 클래스
+// WebSecurityConfig 클래스
 package com.dw.board.conf;
 
 import org.springframework.context.annotation.Bean;
