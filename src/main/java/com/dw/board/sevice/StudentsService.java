@@ -47,17 +47,18 @@ public class StudentsService {
 				//쿼리 결과가 null로 리턴되면 return false;
 				return false;
 			}
-			
+			//inputPassword : 아직 암호화 되기전 비밀번호, password : 암호화된 비밀번호
 			String inputPassword = vo.getStudentsPassword();//HTML에서 받아온 비밀번호
 			String password = student.getStudentsPassword();//DB에서 가져온 비밀번호
-			if(passwordEncoder.matches(inputPassword, password)) { //비밀번호 체크
-				//matches함수는 암호화된 비밀번호와 입력한 비밀번호를 비교해주는 메소드이다.
+			System.out.println("HTML에서 보낸 비밀번호 => "+inputPassword);
+			System.out.println("암호화된 DB 데이터 비밀번호 => "+password);
+			if(passwordEncoder.matches(inputPassword, password)) { //비밀번호 체크, 파라미터 값이 같다면(true) if문 실행
+				//matches함수는 암호화된 비밀번호와 입력한 비밀번호(암호화되기 전 비밀번호)를 비교해주는 메소드이다.
 				//if문에는 inputPassword와 password를 비교하여 비밀번호가 겹치지 않게 비교해주는 matche함수 사용!
-				return false;
+				return true;
 			}
 			
-			// 쿼리의 결과가 null이 아니고 inputPassword와 password가 겹치지 않는다면 retrun true;
-			return true;
+			return false;
 		}
 	
 	
