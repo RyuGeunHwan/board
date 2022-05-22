@@ -23,7 +23,10 @@ public class BoardService {
 	 * @date : 2022. 5. 19.
 	 *comment : 
 	 */
-	@Transactional(rollbackFor = {Exception.class})
+	@Transactional(rollbackFor = {Exception.class}) //오류를 잡아주는 어노테이션
+	//@Transactional 어노테이션이 있는데도 오류가 났음에도 불구하고 데이터는 안들어갔지만
+	// default가 auto increment인 컬럼에 데이터는 안들어갔지만 오류난 구간은 건너뛰고 자동증감됨 
+	// 질문. 이유는???
 	public int getBoardInsert(BoardVO vo) {
 		return boardMapper.insertBoard(vo);
 	}

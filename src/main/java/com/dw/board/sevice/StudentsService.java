@@ -20,6 +20,7 @@ public class StudentsService {
 	private PasswordEncoder passwordEncoder;
 
 	// 학생 저장
+	@Transactional(rollbackFor = {Exception.class})
 	public int getInsertStudents(StudentsVO vo) {
 		// 학생비밀번호 암호화
 		String password = vo.getStudentsPassword();
