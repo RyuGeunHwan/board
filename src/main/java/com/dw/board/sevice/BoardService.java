@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dw.board.mapper.BoardMapper;
+import com.dw.board.mapper.StudentsMapper;
 import com.dw.board.vo.BoardVO;
+import com.dw.board.vo.StudentsVO;
 
 @Service
 public class BoardService {
 
 	@Autowired
 	private BoardMapper boardMapper;
+	@Autowired
+	private StudentsMapper studentMapper;
 	
 	
 	/**
@@ -28,7 +32,9 @@ public class BoardService {
 	// default가 auto increment인 컬럼에 데이터는 안들어갔지만 오류난 구간은 건너뛰고 자동증감됨 
 	// 질문. 이유는???
 	public int getBoardInsert(BoardVO vo) {
+		List<StudentsVO> list = studentMapper.selectAllStudentsList();
 		return boardMapper.insertBoard(vo);
+//		boardMapper.insertBoard(vo)
 	}
 	
 	/**
