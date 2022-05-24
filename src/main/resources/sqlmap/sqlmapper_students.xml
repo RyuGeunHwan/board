@@ -23,8 +23,9 @@ SELECT
 	students_id AS studentsId,
 	students_name AS studentsName,
 	students_password AS studentsPassword,
-	create_at AS createAt
+	date_format(create_at, '%Y-%m-%d') AS createAt
 FROM students
+
 </select>
 
 
@@ -35,7 +36,7 @@ SELECT
 	students_id AS studentsId,
 	students_name AS studentsName,
 	students_password AS studentsPassword,
-	create_at AS createAt
+	date_format(create_at, '%Y-%m-%d') AS createAt
 FROM students
 </select>
 

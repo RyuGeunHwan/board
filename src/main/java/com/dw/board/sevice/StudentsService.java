@@ -1,5 +1,6 @@
 package com.dw.board.sevice;
 
+import java.text.DateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +66,11 @@ public class StudentsService {
 	
 	
 	public List<StudentsVO> getAllStudentsList(){
+//		List<StudentsVO> list = studentsMapper.selectAllStudentsList();
+//		for(int i=0; i<list.size(); i++) {
+//			list.get(i).getCreateAt();
+//			DateFormat date = null;
+//		}
 		return studentsMapper.selectAllStudentsList();
 	}
 	

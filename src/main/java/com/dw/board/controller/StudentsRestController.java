@@ -3,6 +3,8 @@ package com.dw.board.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,8 +34,14 @@ public class StudentsRestController {
 	// DB데이터와 입력데이터를 비교하는 POST메소드
 	@CrossOrigin
 	@PostMapping("/login")
-	public boolean callIsLogin(@RequestBody StudentsVO vo) {
-		return studentsSevice.isStudents(vo);
+	public boolean callIsLogin(@RequestBody StudentsVO vo, HttpSession httpSession) {//HttpSession : 세션 저장 클래스
+		boolean isLogin = studentsSevice.isStudents(vo);// 로그인을 할때 입력한 비밀번호와 DB에 있는 비밀번호가 일치하는지 확인하는 boolean형 메소드
+		if(isLogin) {
+			//HttpSession 저장하는 방식 : Key, value
+			// public void setAttribute(String name, Object value); => HttpSession 클래스에 있는 메소드
+			httpSession.setAttribute("name", vo.getStudentsName());
+		}
+		return isLogin;
 	}
 	
 	// post는 body로 데이터를 받는다.
@@ -56,7 +64,14 @@ public class StudentsRestController {
 	// Map으로 학생조회
 	@CrossOrigin
 	@GetMapping("/students/map")
-	public List<Map<String,Object>> callStudentsListByMap(){
+	public List<Map<String,Object>> callStudentsListByMap(HttpSession httpSession){
+		//public Object getAttribute(setAttribute함수의 key값을 입력);
+		// 접근 방법은 Map과 동일 : get("key명")
+		String name = (String)httpSession.getAttribute("name"); 
+		System.out.println("세션에서 가져온 이름은 ===> "+ name);
+		if(name == null) { // 로그인 한 사람이 없거나 로그인 정보가 틀렸거나
+			return null;
+		}
 		return studentsSevice.getAllStudentsListByMap();
 	}
 	

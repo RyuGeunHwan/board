@@ -3,7 +3,7 @@ package com.dw.board.vo;
 import lombok.Data;
 
 @Data
-public class BoardVO extends StudentsVO {
+public class BoardVO {
 	private int boardId;
 	private int studentsId;
 	

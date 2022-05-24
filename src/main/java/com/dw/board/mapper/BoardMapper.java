@@ -1,6 +1,7 @@
 package com.dw.board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,6 +26,6 @@ public interface BoardMapper {
 	 * @date : 2022. 5. 19.
 	 *comment : 게시판 전체조회
 	 */
-	public List<BoardVO> selectBoard();
+	public List<Map<String,Object>> selectBoard();
 	
 }

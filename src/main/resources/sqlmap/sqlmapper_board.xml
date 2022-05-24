@@ -26,21 +26,31 @@ VALUES
 
 
 
-<!-- 게시판 전체조회 -->
-<select id="selectBoard" resultType="BoardVO">
+<!-- join으로 조회할 때 resultType을 map으로 -->
+<select id="selectBoard" resultType="map">
+SELECT 
+	b.board_id AS boardId,
+	b.students_id AS studentsId,
+	s.students_name AS studentsName,
+	b.title,
+	b.content,
+	IFNULL(DATE_FORMAT(b.update_at, '%Y-%m-%d'), "-") AS updateAt,
+	date_format(b.create_at, '%Y-%m-%d') AS createAt
+FROM board AS b INNER JOIN students AS s
+ON b.students_id = s.students_id 
+</select>
+ <!-- 기존 쿼리
 SELECT
-board_id AS boardId,
-			b.students_id AS studentsId,
-			s.students_name AS studentsName,
-			s.students_password AS studentsPassword,
-			title,
-			content,
-			update_at AS updateAt,
-			b.create_at AS createAt,
-			s.create_at AS createAt
+	b.board_id AS boardId,
+	b.students_id AS studentsId,
+	s.students_name AS studentsName,
+	title,
+	content,
+	b.update_at AS updateAt,
+	b.create_at AS createAt
 FROM board b inner join students s
 on b.students_id = s.students_id
-</select>
+-->
 
-
+	
 </mapper>
