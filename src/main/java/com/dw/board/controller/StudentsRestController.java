@@ -65,13 +65,15 @@ public class StudentsRestController {
 	@CrossOrigin
 	@GetMapping("/students/map")
 	public List<Map<String,Object>> callStudentsListByMap(HttpSession httpSession){
+		
 		//public Object getAttribute(setAttribute함수의 key값을 입력);
 		// 접근 방법은 Map과 동일 : get("key명")
-		String name = (String)httpSession.getAttribute("name"); 
-		System.out.println("세션에서 가져온 이름은 ===> "+ name);
-		if(name == null) { // 로그인 한 사람이 없거나 로그인 정보가 틀렸거나
-			return null;
-		}
+		// 세션 데이터 가져오기(추후 로직 구현 예정)
+//		String name = (String)httpSession.getAttribute("name"); 
+//		System.out.println("세션에서 가져온 이름은 ===> "+ name);
+//		if(name == null) { // 로그인 한 사람이 없거나 로그인 정보가 틀렸으면 return null;
+//			return null;
+//		}
 		return studentsSevice.getAllStudentsListByMap();
 	}
 	

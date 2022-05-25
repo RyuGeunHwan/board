@@ -68,7 +68,6 @@ WHERE
 	students_id = #{studentsId}
 </update>
 
-<!--  -->
 <select id="selectStudentsOne" resultType="StudentsVO">
 SELECT 
 	students_id AS studentsId,
