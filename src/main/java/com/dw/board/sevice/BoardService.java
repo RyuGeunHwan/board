@@ -53,4 +53,26 @@ public class BoardService {
 
 		return boardMapper.selectBoard();
 	}
+	
+	// 게시물 수정
+	@Transactional(rollbackFor = {Exception.class})
+	public int getUpdateBoard(int boardId, BoardVO vo) {
+		vo.setBoardId(boardId); //VO에 Id를 셋팅 해줘서 mapper에 있는 vo 수정값이랑 Id가 전부 있게 하자.
+		return boardMapper.updateBoard(vo);
+	}
+	
+	// 게시물 삭제
+	@Transactional(rollbackFor = {Exception.class})
+	public int getRemoveBoard(int boardId) {
+		return boardMapper.removeBoard(boardId);
+	}
+	
+	// 게시물 상세보기
+	@Transactional(rollbackFor = {Exception.class})
+	public BoardVO getDetailBoard(int boardId) {
+		return boardMapper.detailBoard(boardId);
+	}
+
+
+
 }

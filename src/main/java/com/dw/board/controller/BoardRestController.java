@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +28,7 @@ public class BoardRestController {
 	@Autowired
 	private BoardService boardService;
 	
-	// 게시판 저장
+	// 게시판 저장(C : Create(INSERT))
 	@CrossOrigin
 	@PostMapping("/board")
 	public int callSaveBoard(@RequestBody BoardVO vo) {
@@ -33,11 +36,30 @@ public class BoardRestController {
 	}
 	
 	
-	// 게시판 조회
+	// 게시판 전체 조회(R : READ(SELECT))
 	@CrossOrigin
 	@GetMapping("/board")
 	public List<Map<String,Object>> callBoardList(){
 		return boardService.getBoardList();
 	}
+	// 게시물 수정(U : UPDATE)
+	@CrossOrigin
+	@PatchMapping("/board/boardId/{id}")
+	public int callUpdateBoard(@PathVariable("id") int boardId, @RequestBody BoardVO vo) {
+		return boardService.getUpdateBoard(boardId,vo);
+	}
 	
+	// 게시물 삭제(D : DELETE)
+	@CrossOrigin
+	@DeleteMapping("/board/boardId/{id}")
+	public int callRemoveBoard(@PathVariable("id") int boardId) {
+		return boardService.getRemoveBoard(boardId);
+	}
+	
+	// 게시물 상세보기
+	@CrossOrigin
+	@GetMapping("/board/boardId/{id}")
+	public BoardVO callBoard(@PathVariable("id") int boardId) {
+		return boardService.getDetailBoard(boardId);
+	}
 }

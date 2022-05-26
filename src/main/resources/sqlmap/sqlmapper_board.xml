@@ -52,5 +52,28 @@ FROM board b inner join students s
 on b.students_id = s.students_id
 -->
 
-	
+<update id="updateBoard">
+UPDATE board 
+SET
+	title = #{title},
+	update_at = date_format(now(), "%Y-%m-%d"),
+	content = #{content}
+WHERE board_id = #{boardId}
+</update>
+
+<delete id="removeBoard">
+DELETE from board 
+WHERE board_id = #{id}
+</delete>
+
+<select id="detailBoard" resultType="BoardVO">
+SELECT 
+	title,
+	content,
+	create_at
+FROM board
+WHERE
+board_id = #{id}
+</select>
+
 </mapper>
