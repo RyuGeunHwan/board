@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dw.board.sevice.BoardService;
@@ -62,4 +63,21 @@ public class BoardRestController {
 	public BoardVO callBoard(@PathVariable("id") int boardId) {
 		return boardService.getDetailBoard(boardId);
 	}
+	
+	@CrossOrigin
+	@PatchMapping("/board/views/boardId/{id}")
+	public int callBoardViews(@PathVariable("id") int boardId) {
+		System.out.println(boardId);
+		return boardService.getUpdateBoardViews(boardId);
+	}
+	
+	
+	// 쿼리 스트링으로 검색한 작성자 게시판 리스트 조회
+	@CrossOrigin
+	@GetMapping("/board/search")
+	public List<Map<String, Object>> callBoardSearch(@RequestParam("writer") String writer){
+		return boardService.getSearchBoardList(writer);
+	}
+	
+	
 }

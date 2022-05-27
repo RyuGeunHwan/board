@@ -17,7 +17,7 @@ public interface BoardMapper {
 	 * @return : int
 	 * @author : Geunhwan Ryu
 	 * @date : 2022. 5. 19.
-	 *comment : 게시판 저장
+	 *comment : 게시판 저장(C)
 	 */
 	public int insertBoard(BoardVO vo);
 	
@@ -26,7 +26,7 @@ public interface BoardMapper {
 	 * @return : List
 	 * @author : Geunhwan Ryu
 	 * @date : 2022. 5. 19.
-	 *comment : 게시판 전체조회
+	 *comment : 게시판 전체조회(R)
 	 */
 	public List<Map<String,Object>> selectBoard();
 	
@@ -36,7 +36,7 @@ public interface BoardMapper {
 	 * @return : int
 	 * @author : Geunhwan Ryu
 	 * @date : 2022. 5. 26.
-	 *comment : 게시물 수정
+	 *comment : 게시물 수정(U)
 	 */
 	public int updateBoard(@RequestBody BoardVO vo);
 	
@@ -45,7 +45,7 @@ public interface BoardMapper {
 	 * @return : int
 	 * @author : Geunhwan Ryu
 	 * @date : 2022. 5. 26.
-	 *comment : 게시물 삭제
+	 *comment : 게시물 삭제(D)
 	 */
 	public int removeBoard(@Param("id") int boardId);
 	
@@ -58,7 +58,20 @@ public interface BoardMapper {
 	 */
 	public BoardVO detailBoard(@Param("id") int boardId);
 	
+	/**
+	 * @param vo
+	 * @return : int
+	 * @author : Geunhwan Ryu
+	 * @date : 2022. 5. 27.
+	 *comment : 게시글 클릭시 조회수 카운트
+	 */
+	public int updateBoardViews(BoardVO vo);
 	
-	
-	
+	/**
+	 * @return : List<Map<String,Object>>
+	 * @author : Geunhwan Ryu
+	 * @date : 2022. 5. 27.
+	 *comment : 검색창에 입력한 값의 특정 게시글 검색 조회
+	 */
+	public List<Map<String, Object>> selectSearchBoardList(String studentsName);
 }
