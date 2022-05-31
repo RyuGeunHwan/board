@@ -99,8 +99,8 @@ public class PageHandler {
 		 * @date : 2022. 5. 31.
 		 *comment : 현재 블록의 마지막 페이지
 		 */
-	public void setEndPage(int lastBlock, int nowBlock) {
-		// 한블록에 보여질 페이지수 : 
+	public void setEndPage(int lastBlock, int total) {
+		// ?????????????????질문하기!!!
 		this.endPage = nowBlock * this.navigatePages;
 		if(nowBlock == this.lastBlock) {
 			this.endPage = total;
