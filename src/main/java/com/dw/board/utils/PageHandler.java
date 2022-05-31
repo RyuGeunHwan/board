@@ -1,7 +1,6 @@
 package com.dw.board.utils;
 
-import org.springframework.context.annotation.Configuration;
-
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -124,13 +123,102 @@ public class PageHandler {
 		}
 		
 	}
+
+
 	
 	
 	
 	
 	
 	
+	public int getTotal() {
+		return total;
+	}
+
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+
+	public int getPageNum() {
+		return pageNum;
+	}
+
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+
+	public int getEndPage() {
+		return endPage;
+	}
+
+
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+
+
+	public boolean isHasPreviousPage() {
+		return hasPreviousPage;
+	}
+
+
+	public void setHasPreviousPage(boolean hasPreviousPage) {
+		this.hasPreviousPage = hasPreviousPage;
+	}
+
+
+	public boolean isHasNextPage() {
+		return hasNextPage;
+	}
+
+
+	public void setHasNextPage(boolean hasNextPage) {
+		this.hasNextPage = hasNextPage;
+	}
+
+
+	public int getNowBlock() {
+		return nowBlock;
+	}
+
+
+	public void setNowBlock(int nowBlock) {
+		this.nowBlock = nowBlock;
+	}
+
+
+	public int getNavigatePages() {
+		return navigatePages;
+	}
+
+
+	public void setNavigatePages(int navigatePages) {
+		this.navigatePages = navigatePages;
+	}
+
+
+	public int getStartPage() {
+		return startPage;
+	}
+
+
+	public int getLastBlock() {
+		return lastBlock;
+	}
 	
-	
-	
+
 }
