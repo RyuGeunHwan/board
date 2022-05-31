@@ -79,5 +79,12 @@ public class BoardRestController {
 		return boardService.getSearchBoardList(writer);
 	}
 	
+	// 게시판 통계 조회
+	@CrossOrigin
+	@GetMapping("/board/statistics")
+	public Map<String, Object> callBoardStatistics(){
+		return boardService.getBoardStatistics();
+	}
+	
 	
 }

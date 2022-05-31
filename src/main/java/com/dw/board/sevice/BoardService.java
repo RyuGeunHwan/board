@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dw.board.mapper.BoardMapper;
 import com.dw.board.mapper.StudentsMapper;
+import com.dw.board.utils.PageHandler;
 import com.dw.board.vo.BoardVO;
 import com.dw.board.vo.StudentsVO;
 
@@ -22,7 +23,8 @@ public class BoardService {
 	private BoardMapper boardMapper;
 	@Autowired
 	private StudentsMapper studentMapper;
-	
+	@Autowired
+	private PageHandler pageHendler;
 	
 	/**
 	 * @param vo
@@ -63,6 +65,7 @@ public class BoardService {
 	// 게시물 삭제
 	@Transactional(rollbackFor = {Exception.class})
 	public int getRemoveBoard(int boardId) {
+		System.out.println(boardId);
 		return boardMapper.removeBoard(boardId);
 	}
 	
@@ -87,6 +90,16 @@ public class BoardService {
 	// 작성자 검색하여 게시글 조회
 	public List<Map<String,Object>> getSearchBoardList(String studentsName){
 		return boardMapper.selectSearchBoardList(studentsName);
+	}
+	
+	/**
+	 * @return : Map<String,Object>
+	 * @author : Geunhwan Ryu
+	 * @date : 2022. 5. 31.
+	 *comment : //학생 수, 게시글 수, 작성자 수, 총 조회 수 통계
+	 */
+	public Map<String, Object> getBoardStatistics(){
+		return boardMapper.selectBoardStatistics();
 	}
 
 
