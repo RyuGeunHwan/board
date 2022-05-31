@@ -1,6 +1,5 @@
 package com.dw.board.utils;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
