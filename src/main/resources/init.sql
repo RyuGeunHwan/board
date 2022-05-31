@@ -1,6 +1,6 @@
---CREATE database IF NOT EXISTS dw DEFAULT SET utf8 COLLATE utf8_general_ci;
+-- CREATE database IF NOT EXISTS dw DEFAULT SET utf8 COLLATE utf8_general_ci;
 --	-- 만약에 dw라는 데이터베이스가 없다면 만들어라 라는 쿼리!
---USE dw;
+-- USE dw; 
 --	-- USE : 데이터베이스를 만들면 사용하겠다 라는 쿼리!
 
 

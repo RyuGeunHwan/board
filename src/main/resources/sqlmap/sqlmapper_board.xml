@@ -36,7 +36,7 @@ SELECT
 	content,
 	IFNULL(DATE_FORMAT(b.update_at,'%Y-%m-%d'), '-') AS updateAt,
 	DATE_FORMAT(b.create_at,'%Y-%m-%d') AS createAt,
-	b.cnt
+	cnt
 FROM board b inner join students s
 on b.students_id = s.students_id
 </select>
