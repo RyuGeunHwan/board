@@ -8,7 +8,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 
-@Component
+
+//특정 Controller의 핸들러가 실행되기 전이나 후에 추가적인 작업을 원할때 Interceptor를 사용
+@Component  // @Component : 본인이 만든 클래스를 Bean으로 등록할 때 쓰는 어노테이션 
+			// @Bean : Spring에서 제공해주는 클래스, 외부 라이브러리를 Bean으로 등록할 때 쓰는 어노 테이션
 public class Interceptor implements HandlerInterceptor {
 
 	@Override

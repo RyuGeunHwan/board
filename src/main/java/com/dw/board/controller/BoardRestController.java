@@ -37,7 +37,7 @@ public class BoardRestController {
 	}
 	
 	
-	// 게시판 전체 조회(R : READ(SELECT))
+	// 게시판 전체 조회(R : READ(SELECT)) & pageHandler
 	@CrossOrigin
 	@GetMapping("/board")
 	//리턴타입을 List<Map<String,Object>> => PageInfo<Map<String,Object>>로 변경
