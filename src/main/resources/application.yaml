@@ -27,7 +27,7 @@ spring :
       #DBeaver username 작성
       password : rmsghksdl1! 
       #DBeaver password 작성성    
-      # JSP 경로 설정
+   # JSP 경로 설정
    mvc: 
       view: 
          prefix: /WEB-INF/views/
@@ -35,5 +35,13 @@ spring :
          
       #css,js,image 폴더 위치 설정
       static-path-pattern: /resources/static/**
-      
+#PageHelper
+pagehelper:
+   #사용할 데이터베이스
+   helper-dialect: mysql
+   #범위를 넘어가는 page가 요청오면 가능한 값으로 변경
+   #0페이지를 조회하면 1페이지로, 13페이지까지 있는데 14페이지 요청이 들어오면 13페이지로 변경
+   reasonable: true
+   
+   
    #yaml 파일 안에 설정을 할 경우 계층표현(상,하위 구분)으로 Tab을 꼭 해주어야한다!

@@ -12,6 +12,7 @@ import com.dw.board.mapper.StudentsMapper;
 import com.dw.board.utils.PageHandler;
 import com.dw.board.vo.BoardVO;
 import com.dw.board.vo.StudentsVO;
+import com.github.pagehelper.PageHelper;
 
 @Service
 public class BoardService {
@@ -47,8 +48,12 @@ public class BoardService {
 	 */
 	@Transactional(rollbackFor = {Exception.class})
 	//게시판 전체 조회
-	public List<Map<String,Object>> getBoardList(){
-
+	// pageNum : 현재페이지 
+	// pageSize : 한 페이지에 게시물 몇개 보여줄지
+	public List<Map<String,Object>> getBoardList(int pageNum, int pageSize){
+		PageHelper.startPage(pageNum, pageSize);
+		//PageHelper.startPage() : grdle에 다운받은 pageHelper를 사용한것.
+		
 		return boardMapper.selectBoard();
 	}
 	

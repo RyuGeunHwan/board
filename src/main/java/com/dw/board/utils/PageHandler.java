@@ -1,8 +1,11 @@
 package com.dw.board.utils;
 
+import org.springframework.context.annotation.Configuration;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Configuration
 @Getter
 @Setter
 public class PageHandler {
@@ -99,8 +102,7 @@ public class PageHandler {
 		 * @date : 2022. 5. 31.
 		 *comment : 현재 블록의 마지막 페이지
 		 */
-	public void setEndPage(int lastBlock, int total) {
-		// ?????????????????질문하기!!!
+	public void setEndPage(int nowBlock, int total) {
 		this.endPage = nowBlock * this.navigatePages;
 		if(nowBlock == this.lastBlock) {
 			this.endPage = total;

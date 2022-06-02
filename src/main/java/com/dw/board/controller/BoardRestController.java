@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dw.board.sevice.BoardService;
 import com.dw.board.vo.BoardVO;
+import com.github.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -24,7 +25,6 @@ import com.dw.board.vo.BoardVO;
 //url주소 앞에 /api/v1 이(가) 자동으로 붙음.
 //url주소를 검색할 때 /api/v1를 붙여야함.
 public class BoardRestController {
-	
 	
 	@Autowired
 	private BoardService boardService;
@@ -40,8 +40,13 @@ public class BoardRestController {
 	// 게시판 전체 조회(R : READ(SELECT))
 	@CrossOrigin
 	@GetMapping("/board")
-	public List<Map<String,Object>> callBoardList(){
-		return boardService.getBoardList();
+	//리턴타입을 List<Map<String,Object>> => PageInfo<Map<String,Object>>로 변경
+	public PageInfo<Map<String,Object>> callBoardList(
+			@RequestParam("pageNum") int pageNum,
+			@RequestParam("pageSize") int pageSize){
+		
+		 List<Map<String,Object>> list = boardService.getBoardList(pageNum, pageSize);
+		return new PageInfo<Map<String,Object>>(list);
 	}
 	// 게시물 수정(U : UPDATE)
 	@CrossOrigin
@@ -85,6 +90,8 @@ public class BoardRestController {
 	public Map<String, Object> callBoardStatistics(){
 		return boardService.getBoardStatistics();
 	}
+	
+	
 	
 	
 }
