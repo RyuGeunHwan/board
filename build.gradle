@@ -35,6 +35,7 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-core'
 	//PageHanlder(라이브러리)
 	implementation group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.4.2'
+	
 }
 
 tasks.named('test') {

@@ -1,23 +1,25 @@
--- CREATE database IF NOT EXISTS dw DEFAULT SET utf8 COLLATE utf8_general_ci;
---	-- 만약에 dw라는 데이터베이스가 없다면 만들어라 라는 쿼리!
--- USE dw; 
---	-- USE : 데이터베이스를 만들면 사용하겠다 라는 쿼리!
+-- CREATE database IF NOT EXISTS dw DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- USE dw;
 
+-- 컬럼 추가
+-- ALTER TABLE board ADD COLUMN cnt INTEGER(4) DEFAULT 0;
+-- root 계정이 계정을 생성함
+-- '%' 모든 IP허용
+-- create user sangwon@'%' identified by '123';
+
+-- grant로 권한 부여
+-- on 데이터베이스이름.테이블이름 (dw.*)
+-- grant select,insert,update on dw.* to sangwon@'%';
 
 -- 학생 테이블
--- IF NOT EXISTS : 만약 내가 ~할 테이블이 없다면 ~해라 라는 쿼리.
--- IF NOT EXISTS는 안전장치라고 보면 된다. 만약 없으면 ~해라 라는 해석이 되기 때문에.
 CREATE TABLE IF NOT EXISTS students(
     students_id INTEGER(4) AUTO_INCREMENT NOT NULL PRIMARY KEY COMMENT '학생 아이디',
     students_name VARCHAR(20) COMMENT '학생 이름',
     students_password VARCHAR(200) COMMENT '학생 비밀번호',
-    -- 비밀번호는 개발자도 알지 못하게 *암호화를 하기 때문에 테이블을 설계할 때 글자 수 제한을 크게 잡아야한다!
     create_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '가입 날짜'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
 -- 게시판 테이블
--- IF NOT EXISTS : 만약 내가 ~할 테이블이 없다면 ~해라 라는 쿼리.
 CREATE TABLE IF NOT EXISTS board
 (
     board_id INTEGER(4) AUTO_INCREMENT NOT NULL PRIMARY KEY COMMENT '게시판 아이디',
@@ -27,6 +29,17 @@ CREATE TABLE IF NOT EXISTS board
     update_at DATETIME COMMENT '수정 날짜',
     create_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '작성 날짜',
     CONSTRAINT board_students_id_fk FOREIGN KEY (students_id) REFERENCES students(students_id)
-    -- 게시판테이블에 FK가 있는 이유는 테이블 구조가 1(학생):N(게시판)이기 때문이다.
-    -- 1:N은 한 학생이 여러개의 게시판을 작성할 수 있는 구조가 된다.
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 접속이력 테이블
+CREATE TABLE IF NOT EXISTS board_logs
+(
+	log_id BIGINT(20) AUTO_INCREMENT NOT NULL PRIMARY KEY COMMENT '로그 아이디',
+	ip VARCHAR(50) COMMENT '아이피',
+	latitude VARCHAR(20) COMMENT '위도',
+	longitude VARCHAR(20) COMMENT '경도',
+	url VARCHAR(100) COMMENT '요청 url',
+	http_method VARCHAR(10) COMMENT 'http method',
+	create_at DATETIME COMMENT '접속 시간'
+	-- DEFAULT가 없는 이유는 서버에서 로직 실행 시간이 있어서 실제 접속시간과 DB에 저장되는 접속시간이 다를 수 있어서.
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
