@@ -18,6 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
 		//우리가 만든 interceptor를 스프링에 등록
 		registry.addInterceptor(interceptor).excludePathPatterns("/api/v1/logs");
 		// .excludePathPatterns를 설정하게 되면 중간에 interceptor되지 않는다.
+		registry.addInterceptor(interceptor).excludePathPatterns("/api/v1/students/map");
+
 	}
 	
 	

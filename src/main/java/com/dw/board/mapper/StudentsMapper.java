@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dw.board.vo.StudentsVO;
 
@@ -30,11 +31,11 @@ public interface StudentsMapper {
 	 * @date : 2022. 5. 18.
 	 *comment : 학생조회
 	 */
-	public List<StudentsVO> selectAllStudentsList();
+	public List<Map<String,Object>> selectAllStudentsList();
 	
 	public List<Map<String,Object>> selectAllStudentsListByMap();
 	
-	public StudentsVO selectStudents(int studentsId);
+	public Map<String,Object> selectStudents(int studentsId);
 	
 	public int deleteStudents(int studentsId);
 	
@@ -50,4 +51,7 @@ public interface StudentsMapper {
 	 *comment : 학생이름으로 학생정보 조회
 	 */
 	public StudentsVO selectStudentsOne(StudentsVO vo);
+	
+	
+	public List<Map<String,Object>> selectStudentsSearch(String studentsName);
 }

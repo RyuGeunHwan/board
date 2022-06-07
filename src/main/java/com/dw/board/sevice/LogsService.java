@@ -17,7 +17,6 @@ public class LogsService {
 	@Autowired
 	private LogsMapper logsMapper;
 	
-	//
 	@Transactional(rollbackFor = {Exception.class})
 	public int setLogs(LogVO logVO) {
 		return logsMapper.insertLogs(logVO);

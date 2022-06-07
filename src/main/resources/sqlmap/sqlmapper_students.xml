@@ -16,7 +16,7 @@ VALUES
 </insert>
 
 <!-- 전체 학생 조회 -->
-<select id="selectAllStudentsList" resultType="StudentsVO">
+<select id="selectAllStudentsList" resultType="map">
 SELECT 
 <!-- Mapper의 메소드에서 파라미터를 VO클래스로 받고 있기때문에 -->
 <!-- 별칭을 주는 이유는 studentsVO의 필드변수명과 같아야함. -->
@@ -41,23 +41,24 @@ FROM students
 </select>
 
 <!-- id로 특정 학생 조회 -->
-<select id="selectStudents" resultType="StudentsVO">
+<select id="selectStudents" resultType="map">
 SELECT 
 	students_id AS studentsId,
 	students_name AS studentsName,
 	students_password AS studentsPassword,
-	create_at AS createAt
+	date_format(create_at, '%Y-%m-%d') AS createAt
 FROM students
 WHERE 
 students_id = #{studentsId}
 </select>
 
+<!-- 특정학생 삭제 -->
 <delete id="deleteStudents">
 DELETE FROM students
 WHERE students_id = #{studentsId}
 </delete>
 
-
+<!-- 특정학생 수정 -->
 <update id="updateStudents">
 UPDATE 
 	students
@@ -78,6 +79,16 @@ FROM students
 WHERE 
 students_name = #{studentsName}
 </select>
-
+<!-- 검색창으로 학생 검색 -->
+<select id="selectStudentsSearch" resultType="map">
+SELECT
+	students_id AS studentsId,
+	students_name AS studentsName,
+	date_format(create_at, '%Y-%m-%d') AS createAt
+FROM 
+	students
+WHERE
+	 students_name LIKE CONCAT('%',#{studentsName},'%')
+</select>
 
 </mapper>

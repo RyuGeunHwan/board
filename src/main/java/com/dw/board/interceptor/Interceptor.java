@@ -40,7 +40,7 @@ public class Interceptor implements HandlerInterceptor {
 	    
 	    SimpleDateFormat formatter = 
 	    		new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-	    //Locale.KOREA 사용 이유 : 한국 시간으로 강제로 맞추기 위해서 사용
+	    // ***Locale.KOREA 사용 이유 : 한국 시간으로 강제로 맞추기 위해서 사용
 	    String time = formatter.format(Calendar.getInstance().getTime());
 	    
 	    System.out.println("time ==> "+time);

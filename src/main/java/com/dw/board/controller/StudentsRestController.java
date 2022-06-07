@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dw.board.sevice.StudentsService;
 import com.dw.board.vo.StudentsVO;
+import com.github.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -54,17 +56,19 @@ public class StudentsRestController {
 		return studentsSevice.getInsertStudents(vo);
 	}
 	
-	// VO로 학생조회
 	@CrossOrigin //템플릿엔진을 사용하지 않을경우 결과를 출력하고 싶으면 CrossOrigin어노테이션을 붙여주어야한다.
 	@GetMapping("/students")
-	public List<StudentsVO> callStudentsList(){
-		return studentsSevice.getAllStudentsList();
+	public List<Map<String,Object>> callStudentsList(){
+		return studentsSevice.getAllStudentsList(0,0);
 	}
 	
 	// Map으로 학생조회
 	@CrossOrigin
 	@GetMapping("/students/map")
-	public List<Map<String,Object>> callStudentsListByMap(HttpSession httpSession){
+	public PageInfo<Map<String,Object>> callStudentsListByMap(HttpSession httpSession,
+			@RequestParam("pageNum") int pageNum,
+			@RequestParam("pageSize") int pageSize
+			){
 		
 		//public Object getAttribute(setAttribute함수의 key값을 입력);
 		// 접근 방법은 Map과 동일 : get("key명")
@@ -74,24 +78,42 @@ public class StudentsRestController {
 //		if(name == null) { // 로그인 한 사람이 없거나 로그인 정보가 틀렸으면 return null;
 //			return null;
 //		}
-		return studentsSevice.getAllStudentsListByMap();
+		
+		List<Map<String,Object>> list = studentsSevice.getAllStudentsListByMap(pageNum,pageSize);
+		return new PageInfo<Map<String, Object>>(list);
 	}
 	
 	// 특정 학생 조회(PK로 조회 예정)
+	@CrossOrigin
 	@GetMapping("/students/id/{id}")
-	public StudentsVO callStudents(@PathVariable("id") int studentsId) {
+	public Map<String,Object> callStudents(@PathVariable("id") int studentsId) {
 		return studentsSevice.getSelectStudents(studentsId);
 	}
 	
 	// 특정 학생 삭제
+	@CrossOrigin
 	@DeleteMapping("/students/id/{id}")
 	public int callRemoveStudents(@PathVariable("id") int studentsId) {
 		return studentsSevice.removeStudents(studentsId);
 	}
 	
 	// 특정 학생 수정
+	@CrossOrigin
 	@PatchMapping("/students/id/{id}")
 	public int callUpdateStudents(@PathVariable("id") int studentsId, @RequestBody StudentsVO vo) {
 		return studentsSevice.getUpdateStudents(studentsId, vo);
 	}
+	
+	// 쿼리 스트링으로 검색한 학생 정보 조회
+	@CrossOrigin
+	@GetMapping("/students/search")
+	public PageInfo<Map<String, Object>> callStudentsSearch(
+			@RequestParam("studentsName") String studentsName,
+			@RequestParam("pageNum") int pageNum,
+			@RequestParam("pageSize") int pageSize
+			){
+		List<Map<String,Object>> list = studentsSevice.getStudentsSearch(studentsName,pageNum,pageSize);
+		return new PageInfo<Map<String, Object>>(list);
+	}
+
 }

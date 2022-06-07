@@ -36,7 +36,7 @@ public class BoardService {
 	// default가 auto increment인 컬럼에 데이터는 안들어갔지만 오류난 구간은 건너뛰고 자동증감됨 
 	// 질문. 이유는???
 	public int getBoardInsert(BoardVO vo) {
-		List<StudentsVO> list = studentMapper.selectAllStudentsList();
+		List<Map<String,Object>> list = studentMapper.selectAllStudentsList();
 		return boardMapper.insertBoard(vo);
 	}
 	

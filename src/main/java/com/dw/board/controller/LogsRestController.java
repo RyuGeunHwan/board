@@ -32,6 +32,7 @@ public class LogsRestController {
 		return new PageInfo<Map<String, Object>>(list);
 	}
 	
+	// select는 controller 클래스에서 insert는 interceptor클래스에서 구현한다.
 	@CrossOrigin
 	@GetMapping("/logs/logId/{logId}")
 	public Map<String,Object> callLogs(@PathVariable("logId") int logId){

@@ -1,6 +1,5 @@
 package com.dw.board.sevice;
 
-import java.text.DateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dw.board.mapper.StudentsMapper;
 import com.dw.board.vo.StudentsVO;
+import com.github.pagehelper.PageHelper;
 
 @Service
 public class StudentsService {
@@ -65,20 +65,23 @@ public class StudentsService {
 	
 	
 	
-	public List<StudentsVO> getAllStudentsList(){
+	public List<Map<String,Object>> getAllStudentsList(int pageNum, int pageSize){
 //		List<StudentsVO> list = studentsMapper.selectAllStudentsList();
 //		for(int i=0; i<list.size(); i++) {
 //			list.get(i).getCreateAt();
 //			DateFormat date = null;
 //		}
+		PageHelper.startPage(pageNum, pageSize);
+		
 		return studentsMapper.selectAllStudentsList();
 	}
 	
-	public List<Map<String, Object>> getAllStudentsListByMap(){
+	public List<Map<String, Object>> getAllStudentsListByMap(int pageNum, int pageSize){
+		PageHelper.startPage(pageNum, pageSize);
 		return studentsMapper.selectAllStudentsListByMap();
 	}
 	
-	public StudentsVO getSelectStudents(int studentsId) {
+	public Map<String,Object> getSelectStudents(int studentsId) {
 		return studentsMapper.selectStudents(studentsId);
 	}
 	
@@ -91,11 +94,27 @@ public class StudentsService {
 	@Transactional(rollbackFor = {Exception.class})
 	public int getUpdateStudents(int studentsId, StudentsVO vo) {
 		vo.setStudentsId(studentsId);
+		// 학생비밀번호 암호화
+				String password = vo.getStudentsPassword();
+				// DB에 생성할 입력한 비밀번호를 가져온다.
+				System.out.println("암호화 전 => "+password);
+				
+				password = passwordEncoder.encode(password);
+				// 암호화할 클래스.메소드(파라미터)에 비밀번호를 대입해준다.
+				System.out.println("암호화 후 => "+password);
+				vo.setStudentsPassword(password);
+				// 암호화한 비밀번호를 다시 set하여 VO필드변수에 단방향 암호화한 password를 값으로 넣어준다.
+				int rows = studentsMapper.updateStudents(vo);
+				return rows;
 		// vo클래스에 set을 해줌으로써 vo클래스의 필드변수에 값을 넣어준다.
 		//그러면 이미 body로 받은 값과 헤더에서 받은 값("{id}")은 VO클래스에 존재하여 MyBatis에서 쿼리를 계산할 수 있다.
-		return studentsMapper.updateStudents(vo);
+//		return studentsMapper.updateStudents(vo);
 	}
 	
+	public List<Map<String, Object>> getStudentsSearch(String studentsName,int pageNum, int pageSize){
+		PageHelper.startPage(pageNum, pageSize);
+		return studentsMapper.selectStudentsSearch(studentsName);
+	}
 	
 	
 }
