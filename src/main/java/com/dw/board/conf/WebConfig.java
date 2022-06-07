@@ -19,7 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addInterceptor(interceptor).excludePathPatterns("/api/v1/logs");
 		// .excludePathPatterns를 설정하게 되면 중간에 interceptor되지 않는다.
 		registry.addInterceptor(interceptor).excludePathPatterns("/api/v1/students/map");
-
+		registry.addInterceptor(interceptor).excludePathPatterns("/api/v1/board");
+		
 	}
 	
 	
