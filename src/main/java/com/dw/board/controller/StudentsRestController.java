@@ -79,7 +79,7 @@ public class StudentsRestController {
 //			return null;
 //		}
 		
-		List<Map<String,Object>> list = studentsSevice.getAllStudentsListByMap(pageNum,pageSize);
+		List<Map<String,Object>> list = studentsSevice.getAllStudentsList(pageNum,pageSize);
 		return new PageInfo<Map<String, Object>>(list);
 	}
 	

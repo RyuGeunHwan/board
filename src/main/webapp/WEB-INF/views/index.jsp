@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +14,7 @@
 	<h5>Hello word!</h5>
 	<h6>Hello word!</h6>
 </body>
-<script type="text/javascript" src="/resources/static/js/index.js"> //src¿¡ jsÆÄÀÏ °æ·Î¸¦ ¼³Á¤ÇÑ´Ù. resources-> static-> js-> index.jsÆÄÀÏ
+<script type="text/javascript" src="/resources/static/js/index.js"> //srcì— jsíŒŒì¼ ê²½ë¡œë¥¼ ì„¤ì •í•œë‹¤. resources-> static-> js-> index.jsíŒŒì¼
 </script>
 </html>
 

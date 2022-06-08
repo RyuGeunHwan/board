@@ -90,7 +90,11 @@ public class BoardService {
 	}
 	
 	// 작성자 검색하여 게시글 조회
-	public List<Map<String,Object>> getSearchBoardList(String studentsName){
+	public List<Map<String,Object>> getSearchBoardList(String studentsName,int pageNum, int pageSize){
+		
+		//페이징 구현
+		PageHelper.startPage(pageNum, pageSize);
+		
 		return boardMapper.selectSearchBoardList(studentsName);
 	}
 	

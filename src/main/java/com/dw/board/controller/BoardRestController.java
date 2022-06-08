@@ -46,6 +46,7 @@ public class BoardRestController {
 			@RequestParam("pageSize") int pageSize){
 		
 		 List<Map<String,Object>> list = boardService.getBoardList(pageNum, pageSize);
+		 
 		return new PageInfo<Map<String,Object>>(list);
 	}
 	// 게시물 수정(U : UPDATE)
@@ -78,10 +79,19 @@ public class BoardRestController {
 	
 	
 	// 쿼리 스트링으로 검색한 작성자 게시판 리스트 조회
+	// 리턴타입을
 	@CrossOrigin
 	@GetMapping("/board/search")
-	public List<Map<String, Object>> callBoardSearch(@RequestParam("writer") String writer){
-		return boardService.getSearchBoardList(writer);
+	public PageInfo<Map<String, Object>> callBoardSearch(
+			@RequestParam("writer") String writer,
+			@RequestParam("pageNum") int pageNum,
+			@RequestParam("pageSize") int pageSize){
+		
+		// boardService클래스에 파라미터 값 넘겨주기
+		List<Map<String, Object>> list = boardService.getSearchBoardList(writer,pageNum,pageSize);
+		
+		//페이징 구현
+		return new PageInfo<Map<String,Object>>(list);
 	}
 	
 	// 게시판 통계 조회

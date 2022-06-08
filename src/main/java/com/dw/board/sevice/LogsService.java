@@ -26,7 +26,7 @@ public class LogsService {
 		
 		PageHelper.startPage(pageNum, pageSize);
 		//PageHelper.startPage() : grdle에 다운받은 pageHelper를 사용한것.
-		
+		System.out.println();
 		return logsMapper.selectBoardLogs(0);
 	}
 	

@@ -48,6 +48,8 @@ public class StudentsService {
 			if(student == null) { 
 				//쿼리 결과가 null로 리턴되면 return false;
 				return false;
+			}else {
+				System.out.println(student.getStudentsName());
 			}
 			//inputPassword : 아직 암호화 되기전 비밀번호, password : 암호화된 비밀번호
 			String inputPassword = vo.getStudentsPassword();//HTML에서 받아온 비밀번호
