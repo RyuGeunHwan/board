@@ -91,19 +91,19 @@
                     </a>
                 </li>
           		<li>
-                    <a href="/board?pageNum=1&pageSize=10">
+                    <a href="/board?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                         <span class="title" >Dashboard</span>                
                     </a>
                 </li>
                 <li>
-                    <a href="/students">
+                    <a href="/students?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <span class="title" >Students</span>                
                     </a>
                 </li>
                 <li>
-                    <a href="/logs">
+                    <a href="/logs?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                         <span class="title" >logs</span>                
                     </a>
@@ -155,6 +155,22 @@
               </tr>
             </thead>
             <tbody id="studentsData">
+            <c:choose>	 		
+	 				<c:when test="${fn:length(pageHelper.list) > 0}">
+	 					<c:forEach items="${pageHelper.list}" var="item">	
+		 					<tr onclick="getStudents(${item.studentsId})">
+				    			<td>${item.studentsId}</td>
+				    			<td>${item.studentsName}</td>
+				    			<td>${item.createAt}</td>	    							    			
+  							</tr>
+						</c:forEach>
+	 				</c:when>
+	 				<c:otherwise>
+	 					<tr>
+	 						<td colspan="6">데이터가 없습니다.</td>
+	 					</tr>
+	 				</c:otherwise>
+	 			</c:choose>
               <!-- <tr>
                              <td>hyunsangwon</td>
                              <td>현상원</td>
@@ -180,6 +196,16 @@
                     <a href="#">4</a>
                     <a href="#">5</a>
                     <a href="#">Next</a> -->
+             <c:if test="${pageHelper.hasPreviousPage}">
+          		<a onclick="getBoardList(${pageHelper.pageNum-1},5)">Previous</a>
+         	 </c:if>
+          	 <c:forEach begin="${pageHelper.navigateFirstPage}" end="${pageHelper.navigateLastPage}"  var="pageNum">
+          		<a id="pageNum${pageNum}"  onclick="getBoardList(${pageNum},5)">${pageNum}</a>
+         	 </c:forEach>
+         	 <c:if test="${pageHelper.hasNextPage}">
+          		<a onclick="getBoardList(${pageHelper.pageNum+1},5)">Next</a>
+         	 </c:if>
+          	<input id="nowPageNum" type="hidden" value="${pageHelper.pageNum}">
           </div>
         </div>
       </div>
@@ -220,136 +246,24 @@
       $(".insert-popup").css("display", "block");
     });
   </script>
+  
   <script>
-    // 학생 DB 전체조회
-    getLogsList(1, 5);
-
-    // function getAllList(){
-    //     $.ajax({
-    //         url : 'http://localhost:8080/api/v1/students/map',
-    //         type : 'GET',
-    //         dataType : 'json',
-    //         success : function(response){
-    //             console.log(response)
-
-    //         var html = '';
-    //         for(var i=0; i<response.length; i++){
-
-    //             html = '<tr onclick="getStudents('+response[i].studentsId+')"><td>'+response[i].studentsId+'</td><td>'+response[i].studentsName+'</td><td>'+response[i].createAt+'</td></tr>'
-    //             $('#studentsData').append(html);
-    //         }
-    //         },
-    //         error : function(request,status,error){
-    //             console.log(error)
-    //         }
-    //     })
-    // }
-
-    function getLogsList(pageNum, pageSize) {
-      var controllerUrl = null;
-      var keyword = $("#keyword").val().trim();
-      if (keyword == "null") {
-        controllerUrl =
-          "http://localhost:8080/api/v1/students/map?pageNum=" +
-          pageNum +
-          "&pageSize=" +
-          pageSize;
-      } else {
-        controllerUrl =
-          "http://localhost:8080/api/v1/students/search?studentsName=" +
-          keyword +
-          "&pageNum=" +
-          pageNum +
-          "&pageSize=" +
-          pageSize;
-      }
-      $.ajax({
-        url: controllerUrl,
-        type: "GET",
-        dateType: "json",
-        success: function (response) {
-          console.log(response);
-          if (response != null) {
-            var html = "";
-            for (var i = 0; i < response.list.length; i++) {
-              html +=
-                '<tr onclick="getStudents(' +
-                response.list[i].studentsId +
-                ')"><td>' +
-                response.list[i].studentsId +
-                "</td><td>" +
-                response.list[i].studentsName +
-                "</td><td>" +
-                response.list[i].createAt +
-                "</td></tr>";
-            }
-
-            //페이징 화면 구현
-            var paginationHtml = "";
-
-            // 이전페이지 버튼
-            if (response.hasPreviousPage) {
-              // 이전페이지(hasPreviousPage)가 true라면
-              // hasPreviousPage : 이전버튼 유무(type => boolean)
-              paginationHtml +=
-                '<a onclick="getLogsList(' +
-                (response.pageNum - 1) +
-                "," +
-                pageSize +
-                ')" href="#">Previous</a>';
-            }
-
-            for (var i = 0; i < response.navigatepageNums.length; i++) {
-              //페이지 번호 길이 만큼 for문 실행
-              // navigatepageNums : 블록 개수
-              paginationHtml +=
-                '<a id="pageNum' +
-                response.navigatepageNums[i] +
-                '" onclick="getLogsList(' +
-                response.navigatepageNums[i] +
-                "," +
-                pageSize +
-                ')" href="#">' +
-                response.navigatepageNums[i] +
-                "</a>";
-            }
-
-            // 다음페이지 버튼
-            if (response.hasNextPage) {
-              // 다음페이지(hasNextPage)가 true라면
-              // hasNextPage : 다음버튼 유무(type => boolean)
-              paginationHtml +=
-                '<a onclick="getLogsList(' +
-                (response.pageNum + 1) +
-                "," +
-                pageSize +
-                ')" href="#">Next</a>';
-            }
-            $(".pagination").children().remove();
-            $(".pagination").append(paginationHtml);
-
-            // 페이지 번호에 맞게 css 수정
-            $("#pageNum" + pageNum).css("background-color", "#287bff");
-            $("#pageNum" + pageNum).css("color", "#fff");
-
-            $("#studentsData").children().remove();
-            $("#studentsData").append(html);
-          } else {
-            html +=
-              '<tr><td colspan=3 style="text-align:center;">게시글이 없습니다.</td></tr>';
-          }
-        },
-        error: function (request, status, error) {
-          console.log(error);
-        },
-      });
-    }
-
-    // 특정 학생 조회
+	getPageNum();
+  	function getPageNum(){
+		var pageNum = $('#nowPageNum').val();
+		  $("#pageNum" + pageNum).css("background-color", "#287bff");
+     	  $("#pageNum" + pageNum).css("color", "#fff");
+		}
+	//페이지이동
+ 	function getBoardList(pageNum, pageSize){
+ 		location.href="/students?pageNum="+pageNum+"&pageSize="+pageSize;
+ 	}
+	
+ 	 // 특정 학생 상세보기
     function getStudents(studentsId) {
       $(".update-popup").css("display", "block");
       $.ajax({
-        url: "http://localhost:8080/api/v1/students/id/" + studentsId,
+        url: "/api/v1/students/id/" + studentsId,
         data: "GET",
         dataType: "json",
         success: function (response) {
@@ -364,17 +278,16 @@
         },
       });
     }
-
-    // 학생 수정
+ 	 
+ // 학생 수정
     $("#contentUpdate").click(function () {
       var jsonData = {
         studentsName: $("#studentsName").val(),
         studentsPassword: $("#studentsPassword").val(),
       };
-      console.log(jsonData);
       var studentsId = $("#studentsId").val();
       $.ajax({
-        url: "http://localhost:8080/api/v1/students/id/" + studentsId,
+        url: "/api/v1/students/id/" + studentsId,
         type: "PATCH",
         contentType: "application/json",
         dataType: "json",
@@ -386,9 +299,8 @@
               $(".update-popup").css("display", "none");
               $("#studentsName").val("");
               $("#studentsPassword").val("");
+              location.reload();
               alert("변경 사항이 저장 되었습니다.");
-              $("#studentsData").children().remove();
-              getLogsList(1, 5);
             }
           }
         },
@@ -397,14 +309,14 @@
         },
       });
     });
-
-    // 학생 삭제
-    $("#contentDelete").click(function () {
+ 	 
+ 
+ // 학생 삭제
+    $("#contentDelete").click(function(){
       var studentsId = $("#studentsId").val();
-      confirm("해당 학생을 삭제 하시겠습니까?");
-      if (confirm) {
+      if (confirm("해당 학생을 삭제 하시겠습니까?")) {
         $.ajax({
-          url: "http://localhost:8080/api/v1/students/id/" + studentsId,
+          url: "/api/v1/students/id/" + studentsId,
           type: "DELETE",
           dataType: "json",
           success: function (response) {
@@ -412,8 +324,7 @@
               $(".update-popup").css("display", "none");
               alert("ID : " + studentsId + "번이 삭제 되었습니다.");
               $(".update-popup").css("display", "none");
-              $("#studentsData").children().remove();
-              getLogsList(1, 5);
+              location.reload();
             }
           },
           error: function (request, statis, error) {
@@ -422,12 +333,12 @@
         });
       }
     });
-
-    // 학생추가
+ 
+ 
+ // 학생추가
     $(".btn-insert").click(function () {
       var studentsName = $("#insertStudentsName").val();
       var studentsPassword = $("#insertStudentsPassword").val();
-      console.log(studentsName, studentsPassword);
       var jsonData = {
         studentsName: studentsName,
         studentsPassword: studentsPassword,
@@ -443,7 +354,7 @@
       }
       if (confirm("학생을 추가 하시겠습니까?")) {
         $.ajax({
-          url: "http://localhost:8080/api/v1/students",
+          url: "/api/v1/students",
           type: "POST",
           contentType: "application/json", //서버에 json타입으로 보낼 예정(요청).
           dataType: "json", //서버결과를 json으로 응답받겠다.
@@ -454,8 +365,7 @@
               $("#insertStudentsName").val("");
               $("#insertStudentsPassword").val("");
               $(".insert-popup").css("display", "none");
-              $("#studentsData").children().remove();
-              getLogsList(1, 5);
+              location.reload();
             }
           },
           error: function (request, statis, error) {
@@ -464,111 +374,37 @@
         });
       }
     });
-
-    // 쿼리 스트링으로 특정 학생 정보 찾기
-    $("#searchBar").keyup(function (key) {
-      var pageNum = 1;
-      var pageSize = 5;
-      if (key.keyCode == 13) {
-        var studentsName = $("#searchBar").val().trim();
-        if (studentsName != "") {
-          $("#keyword").val(studentsName); //hidden input 태그에 내가 검색한 키워드(search value)를 keyword value에 set함.
+ 
+ 	// students search
+    $("#searchBar").keyup(function(key) {
+        var pageNum = 1;
+        var pageSize = 5;
+        if (key.keyCode == 13) {
+          var studentsName = $("#searchBar").val().trim();
+          if (studentsName != "") {
+            $("#keyword").val(studentsName); //hidden input 태그에 내가 검색한 키워드(search value)를 keyword value에 set함.
+          }
+          $.ajax({
+            url:
+              "/api/v1/students/search?studentsName=" +
+              studentsName +
+              "&pageNum=" +
+              pageNum +
+              "&pageSize=" +
+              pageSize,
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+              if (response != null) {
+            	  location.href='/students/search?writer='+studentsName+'&pageNum='+pageNum+'&pageSize='+pageSize
+            		// 페이지 이동이 된 후에 검색한 학생만 남아있는 페이지가 아닌 기존 페이지로 돌아가는 방법 찾기
+              }
+            },
+            error: function (request, statis, error) {
+              console.log(error);
+            },
+          })
         }
-        $.ajax({
-          url:
-            "http://localhost:8080/api/v1/students/search?studentsName=" +
-            studentsName +
-            "&pageNum=" +
-            pageNum +
-            "&pageSize=" +
-            pageSize,
-          type: "GET",
-          dataType: "json",
-          success: function (response) {
-            console.log(response);
-            if (response != null) {
-              var html = "";
-              for (var i = 0; i < response.list.length; i++) {
-                html +=
-                  '<tr onclick="getStudents(' +
-                  response.list[i].studentsId +
-                  ')"><td>' +
-                  response.list[i].studentsId +
-                  "</td><td>" +
-                  response.list[i].studentsName +
-                  "</td><td>" +
-                  response.list[i].createAt +
-                  "</td></tr>";
-              }
-              //페이징 화면 구현
-              var paginationHtml = "";
-
-              // 이전페이지 버튼
-              if (response.hasPreviousPage) {
-                // 이전페이지(hasPreviousPage)가 true라면
-                // hasPreviousPage : 이전버튼 유무(type => boolean)
-                paginationHtml +=
-                  '<a onclick="getLogsList(' +
-                  (response.pageNum - 1) +
-                  "," +
-                  pageSize +
-                  ')" href="#">Previous</a>';
-              }
-              for (var i = 0; i < response.navigatepageNums.length; i++) {
-                //페이지 번호 길이 만큼 for문 실행
-                // navigatepageNums : 블록 개수
-                paginationHtml +=
-                  '<a id="pageNum' +
-                  response.navigatepageNums[i] +
-                  '" onclick="getLogsList(' +
-                  response.navigatepageNums[i] +
-                  "," +
-                  pageSize +
-                  ')" href="#">' +
-                  response.navigatepageNums[i] +
-                  "</a>";
-              }
-
-              // 다음페이지 버튼
-              if (response.hasNextPage) {
-                // 다음페이지(hasNextPage)가 true라면
-                // hasNextPage : 다음버튼 유무(type => boolean)
-                paginationHtml +=
-                  '<a onclick="getLogsList(' +
-                  (response.pageNum + 1) +
-                  "," +
-                  pageSize +
-                  ')" href="#">Next</a>';
-              }
-              $(".pagination").children().remove();
-              $(".pagination").append(paginationHtml);
-              // 페이지 번호에 맞게 css 수정
-              $("#pageNum" + pageNum).css("background-color", "#287bff");
-              $("#pageNum" + pageNum).css("color", "#fff");
-              $("#studentsData").children().remove();
-              $("#studentsData").append(html);
-            }
-          },
-          error: function (request, statis, error) {
-            console.log(error);
-          },
-        });
-      }
-      // 검색 후 검색어 지우면 학생 전체리스트 보여주기
-      // keyCode = 8 : backspace
-      if (key.keyCode == 8) {
-        if (keyword == "null") {
-          $("#studentsData").children().remove();
-          getLogsList(1, 5);
-        }
-      }
-    });
-
-    // 로그인 페이지 돌아가기
-    $(".logout").click(function () {
-      if (confirm("로그아웃 하시겠습니까?")) {
-        location.href = "../login.html";
-      }
-    });
+    })
   </script>
 </html>

@@ -53,13 +53,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/students">
+                    <a href="/students?pageNum=1&pageSize=10">
                         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <span class="title" >Students</span>                
                     </a>
                 </li>
                 <li>
-                    <a href="/logs">
+                    <a href="/logs?pageNum=1&pageSize=10">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                         <span class="title" >logs</span>                
                     </a>
@@ -107,6 +107,24 @@
               </tr>
             </thead>
             <tbody id="boardData">
+            <c:choose>	 		
+	 				<c:when test="${fn:length(pageHelper.list) > 0}">
+	 					<c:forEach items="${pageHelper.list}" var="item">	
+		 					<tr onclick="getPopup(${item.logId})">
+		 						<td>${item.logId}</td>
+				    			<td>${item.ip}</td>
+				    			<td>${item.url}</td>
+				    			<td>${item.httpMethod}</td>	
+				    			<td>${item.createAt}</td>	 
+  							</tr>
+						</c:forEach>
+	 				</c:when>
+	 				<c:otherwise>
+	 					<tr>
+	 						<td colspan="6">데이터가 없습니다.</td>
+	 					</tr>
+	 				</c:otherwise>
+	 			</c:choose>
               <!-- <tr onclick="getPopup()">
                             <td>1</td>
                             <td>192.158.0.252</td>
@@ -138,6 +156,16 @@
                     <a href="#">4</a>
                     <a href="#">5</a>
                     <a href="#">Next</a> -->
+             <c:if test="${pageHelper.hasPreviousPage}">
+          		<a onclick="getBoardList(${pageHelper.pageNum-1},50)">Previous</a>
+         	 </c:if>
+          	 <c:forEach begin="${pageHelper.navigateFirstPage}" end="${pageHelper.navigateLastPage}"  var="pageNum">
+          		<a id="pageNum${pageNum}"  onclick="getBoardList(${pageNum},50)">${pageNum}</a>
+         	 </c:forEach>
+         	 <c:if test="${pageHelper.hasNextPage}">
+          		<a onclick="getBoardList(${pageHelper.pageNum+1},50)">Next</a>
+         	 </c:if>
+          	<input id="nowPageNum" type="hidden" value="${pageHelper.pageNum}">
           </div>
         </div>
       </div>
@@ -172,153 +200,90 @@
       item.addEventListener("mouseover", activeLink);
     });
   </script>
-  <script>
-    $(".logs-popup").css("display", "none");
-
-    function getPopup(logId) {
-      console.log(logId);
-      $(".logs-popup").css("display", "block");
-
-      $.ajax({
-        url: "http://localhost:8080/api/v1/logs/logId/" + logId,
-        type: "GET",
-        dataType: "json", //서버결과를 json으로 응답받겠다.
-        success: function (response) {
-          console.log(response);
-
-          var latitude = response.latitude;
-          var longitude = response.longitude;
-
-          $("#ip").val(response.ip);
-          $("#createAt").val(response.create_at);
-
-          // 카카오맵
-          var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-            mapOption = {
-              center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
-              level: 3, // 지도의 확대 레벨
-            };
-
-          var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-          // 마커가 표시될 위치입니다
-          var markerPosition = new kakao.maps.LatLng(latitude, longitude);
-
-          // 마커를 생성합니다
-          var marker = new kakao.maps.Marker({
-            position: markerPosition,
-          });
-
-          // 마커가 지도 위에 표시되도록 설정합니다
-          marker.setMap(map);
-
-          // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
-          // marker.setMap(null);
-        },
-        error: function (request, statis, error) {
-          console.log(error);
-        },
-      });
-    }
-
+    <script>
     $(".btn-cancel").click(function () {
-      $(".logs-popup").css("display", "none");
+      // 글 수정 팝업 닫기 누르면 팝업창 닫기
+    	$(".logs-popup").css("display", "none");
     });
+  </script>
+  <script>
+  $(".logs-popup").css("display", "none");
+  getPageNum();
+	function getPageNum(){
+			var pageNum = $('#nowPageNum').val();
+		 	$("#pageNum" + pageNum).css("background-color", "#287bff");
+   	  		$("#pageNum" + pageNum).css("color", "#fff");
+		}
+	//페이지이동
+	function getBoardList(pageNum, pageSize){
+		location.href="/logs?pageNum="+pageNum+"&pageSize="+pageSize;
+	}
+  
+	function getPopup(logId) {
+	      $(".logs-popup").css("display", "block");
 
-    getLogsList(1, 50);
+	      $.ajax({
+	        url: "/api/v1/logs/logId/" + logId,
+	        type: "GET",
+	        dataType: "json", //서버결과를 json으로 응답받겠다.
+	        success: function (response) {
+	          var latitude = response.latitude;
+	          var longitude = response.longitude;
+
+	          $("#ip").val(response.ip);
+	          $("#createAt").val(response.create_at);
+
+	          // 카카오맵
+	          var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+	            mapOption = {
+	              center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
+	              level: 3, // 지도의 확대 레벨
+	            };
+
+	          var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+	          // 마커가 표시될 위치입니다
+	          var markerPosition = new kakao.maps.LatLng(latitude, longitude);
+
+	          // 마커를 생성합니다
+	          var marker = new kakao.maps.Marker({
+	            position: markerPosition,
+	          });
+
+	          // 마커가 지도 위에 표시되도록 설정합니다
+	          marker.setMap(map);
+
+	          // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+	          // marker.setMap(null);
+	        },
+	        error: function (request, statis, error) {
+	          console.log(error);
+	        },
+	      });
+	    }
+
+   
     function getLogsList(pageNum, pageSize) {
-      $.ajax({
-        url:
-          "http://localhost:8080/api/v1/logs?pageNum=" +
-          pageNum +
-          "&pageSize=" +
-          pageSize,
-        type: "GET",
-        dateType: "json",
-        success: function (response) {
-          console.log(response);
-          if (response != null) {
-            var html = "";
-            for (var i = 0; i < response.list.length; i++) {
-              html +=
-                '<tr onclick="getPopup(' +
-                response.list[i].log_id +
-                ')"><td>' +
-                response.list[i].log_id +
-                "</td><td>" +
-                response.list[i].ip +
-                "</td><td>" +
-                response.list[i].url +
-                "</td><td>" +
-                response.list[i].http_method +
-                "</td><td>" +
-                response.list[i].create_at +
-                "</td></tr>";
+        $.ajax({
+          url:
+            "/api/v1/logs?pageNum=" +
+            pageNum +
+            "&pageSize=" +
+            pageSize,
+          type: "GET",
+          dateType: "json",
+          success: function (response) {
+            if (response != null) {
+            	
             }
-
-            //페이징 화면 구현
-            var paginationHtml = "";
-
-            // 이전페이지 버튼
-            if (response.hasPreviousPage) {
-              // 이전페이지(hasPreviousPage)가 true라면
-              // hasPreviousPage : 이전버튼 유무(type => boolean)
-              paginationHtml +=
-                '<a onclick="getLogsList(' +
-                (response.pageNum - 1) +
-                "," +
-                pageSize +
-                ')" href="#">Previous</a>';
-            }
-
-            for (var i = 0; i < response.navigatepageNums.length; i++) {
-              //페이지 번호 길이 만큼 for문 실행
-              // navigatepageNums : 블록 개수
-              paginationHtml +=
-                '<a id="pageNum' +
-                response.navigatepageNums[i] +
-                '" onclick="getLogsList(' +
-                response.navigatepageNums[i] +
-                "," +
-                pageSize +
-                ')" href="#">' +
-                response.navigatepageNums[i] +
-                "</a>";
-            }
-
-            // 다음페이지 버튼
-            if (response.hasNextPage) {
-              // 다음페이지(hasNextPage)가 true라면
-              // hasNextPage : 다음버튼 유무(type => boolean)
-              paginationHtml +=
-                '<a onclick="getLogsList(' +
-                (response.pageNum + 1) +
-                "," +
-                pageSize +
-                ')" href="#">Next</a>';
-            }
-            $(".pagination").children().remove();
-            $(".pagination").append(paginationHtml);
-
-            // 페이지 번호에 맞게 css 수정
-            $("#pageNum" + pageNum).css("background-color", "#287bff");
-            $("#pageNum" + pageNum).css("color", "#fff");
-
-            $("#boardData").children().remove();
-            $("#boardData").append(html);
-          }
-        },
-        error: function (request, status, error) {
-          console.log(error);
-        },
-      });
-    }
-
-    // 로그인 페이지 돌아가기
-    $(".logout").click(function () {
-      if (confirm("로그아웃 하시겠습니까?")) {
-        location.href = "/login";
+          },
+          error: function (request, status, error) {
+            console.log(error);
+          },
+          
+        });
       }
-    });
+
+    
   </script>
 </html>

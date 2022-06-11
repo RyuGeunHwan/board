@@ -62,19 +62,19 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/board?pageNum=1&pageSize=10">
+                    <a href="/board?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                         <span class="title" >Dashboard</span>                
                     </a>
                 </li>
                 <li>
-                    <a href="/students">
+                    <a href="/students?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <span class="title" >Students</span>                
                     </a>
                 </li>
                 <li>
-                    <a href="/logs">
+                    <a href="/logs?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                         <span class="title" >logs</span>                
                     </a>
@@ -232,15 +232,15 @@
                     <a href="#">Next</a> -->
                     <!-- 페이징 구현 -->
                     <c:if test="${pageHelper.hasPreviousPage}">
-                    	<a onclick="getBoardList(${pageHelper.pageNum-1}, 10)" href="#">Previous</a>
+                    	<a onclick="getBoardList(${pageHelper.pageNum-1}, 5)" href="#">Previous</a>
                     </c:if>
                     <c:forEach begin="${pageHelper.navigateFirstPage}" end="${pageHelper.navigateLastPage}"  var="pageNum">
-	                    <a id="pageNum${pageNum}" onclick="getBoardList(${pageNum}, 10)">
+	                    <a id="pageNum${pageNum}" onclick="getBoardList(${pageNum}, 5)">
 	                    ${pageNum}
 	                    </a>
                     </c:forEach>
                     <c:if test="${pageHelper.hasNextPage}">
-                     	<a onclick="getBoardList(${pageHelper.pageNum+1}, 10)" href="#">Next</a>
+                     	<a onclick="getBoardList(${pageHelper.pageNum+1}, 5)" href="#">Next</a>
                     </c:if>
                  </div>
                  <input id="nowPageNum" type="hidden" value="${pageHelper.pageNum}">
@@ -290,7 +290,7 @@
 		}
 		
 	if(pageName == 'dashboard'){
-		location.href = "/board?pageNum=1&pageSize=10";
+		location.href = "/board?pageNum=1&pageSize=5";
 	}
 	}
 	
@@ -383,7 +383,7 @@
         var title = $('#title').val();
         var content = $('#content').val();
         var count = 0;
-        var studentsId = 28;
+        var studentsId = 9;
 
         if(title == ''){
             alert('제목을 작성해주세요')
