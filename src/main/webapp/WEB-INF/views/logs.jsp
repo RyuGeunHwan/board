@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/logs?pageNum=1&pageSize=10">
+                    <a href="/logs?pageNum=1&pageSize=50">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                         <span class="title" >logs</span>                
                     </a>
@@ -110,12 +110,12 @@
             <c:choose>	 		
 	 				<c:when test="${fn:length(pageHelper.list) > 0}">
 	 					<c:forEach items="${pageHelper.list}" var="item">	
-		 					<tr onclick="getPopup(${item.logId})">
-		 						<td>${item.logId}</td>
+		 					<tr onclick="getPopup(${item.log_id})">
+		 						<td>${item.log_id}</td>
 				    			<td>${item.ip}</td>
 				    			<td>${item.url}</td>
-				    			<td>${item.httpMethod}</td>	
-				    			<td>${item.createAt}</td>	 
+				    			<td>${item.http_method}</td>	
+				    			<td>${item.create_at}</td>	 
   							</tr>
 						</c:forEach>
 	 				</c:when>
@@ -207,18 +207,23 @@
     });
   </script>
   <script>
-  $(".logs-popup").css("display", "none");
-  getPageNum();
+  	$(".logs-popup").css("display", "none");
+  
+  	getPageNum();
+  	
 	function getPageNum(){
 			var pageNum = $('#nowPageNum').val();
 		 	$("#pageNum" + pageNum).css("background-color", "#287bff");
    	  		$("#pageNum" + pageNum).css("color", "#fff");
 		}
-	//페이지이동
+	
+	
+	//페이지 라이브러리 구현!
 	function getBoardList(pageNum, pageSize){
 		location.href="/logs?pageNum="+pageNum+"&pageSize="+pageSize;
 	}
   
+	
 	function getPopup(logId) {
 	      $(".logs-popup").css("display", "block");
 

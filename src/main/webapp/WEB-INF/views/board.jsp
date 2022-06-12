@@ -74,7 +74,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/logs?pageNum=1&pageSize=5">
+                    <a href="/logs?pageNum=1&pageSize=50">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                         <span class="title" >logs</span>                
                     </a>

@@ -103,7 +103,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/logs?pageNum=1&pageSize=5">
+                    <a href="/logs?pageNum=1&pageSize=50">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                         <span class="title" >logs</span>                
                     </a>
@@ -398,6 +398,8 @@
               if (response != null) {
             	  location.href='/students/search?writer='+studentsName+'&pageNum='+pageNum+'&pageSize='+pageSize
             		// 페이지 이동이 된 후에 검색한 학생만 남아있는 페이지가 아닌 기존 페이지로 돌아가는 방법 찾기
+            		// 방법1. 검색을하고 keyCode==13을 누르면 $('searchvar').val()의 값은 남아 있어야한다.
+            		// 		keyCode==8(Backspace)눌렀을때 $('searchvar').val()의 값이 null일 경우 모든데이터를 가져오게 만들어야한다.
               }
             },
             error: function (request, statis, error) {
