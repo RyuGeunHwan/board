@@ -39,21 +39,21 @@
         </div>
       </div>
       <div class="navigation">
-        <ul>
-          <li>
-            <a href="#">
-              <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
-              <span class="title">DW Board</span>
-            </a>
-          </li>
-          		<li>
-                    <a href="/board?pageNum=1&pageSize=10">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
+                        <span class="title">DW Board</span>                
+                    </a>
+                </li>
+                <li>
+                    <a href="/board?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                         <span class="title" >Dashboard</span>                
                     </a>
                 </li>
                 <li>
-                    <a href="/students?pageNum=1&pageSize=10">
+                    <a href="/students?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <span class="title" >Students</span>                
                     </a>
@@ -70,7 +70,7 @@
                         <span class="title" >Sign Out</span>                
                     </a>
                 </li>
-        </ul>
+            </ul>
       </div>
     </div>
     <!-- main -->

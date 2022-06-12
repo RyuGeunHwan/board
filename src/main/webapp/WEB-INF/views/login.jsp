@@ -66,7 +66,7 @@
             if (response !== null) {
               if (response) {
                 // location.href : 페이지 이동 함수
-                location.href = "board/index.html"; //페이지 이동(board폴더에 있는 index.html 파일로 이동)
+                location.href = "/board?pageNum=1&pageSize=5";
               } else {
                 alert("비밀번호 혹은 이름이 틀렸습니다.");
               }

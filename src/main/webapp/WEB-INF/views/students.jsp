@@ -83,14 +83,14 @@
         </div>
       </div>
       <div class="navigation">
-        <ul>
-        		<li>
+            <ul>
+                <li>
                     <a href="#">
                         <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
                         <span class="title">DW Board</span>                
                     </a>
                 </li>
-          		<li>
+                <li>
                     <a href="/board?pageNum=1&pageSize=5">
                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                         <span class="title" >Dashboard</span>                
@@ -114,7 +114,7 @@
                         <span class="title" >Sign Out</span>                
                     </a>
                 </li>
-        </ul>
+            </ul>
       </div>
     </div>
     <!-- main -->
