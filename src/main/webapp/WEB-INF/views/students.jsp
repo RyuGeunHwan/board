@@ -167,7 +167,7 @@
 	 				</c:when>
 	 				<c:otherwise>
 	 					<tr>
-	 						<td colspan="6">데이터가 없습니다.</td>
+	 						<td colspan="3">데이터가 없습니다.</td>
 	 					</tr>
 	 				</c:otherwise>
 	 			</c:choose>
@@ -381,6 +381,7 @@
         var pageSize = 5;
         if (key.keyCode == 13) {
           var studentsName = $("#searchBar").val().trim();
+          var keyword = $("#keyword").val()
           if (studentsName != "") {
             $("#keyword").val(studentsName); //hidden input 태그에 내가 검색한 키워드(search value)를 keyword value에 set함.
           }
@@ -396,16 +397,25 @@
             dataType: "json",
             success: function (response) {
               if (response != null) {
-            	  location.href='/students/search?writer='+studentsName+'&pageNum='+pageNum+'&pageSize='+pageSize
+            	  location.href='/students/search?writer='+$("#keyword").val()+'&pageNum='+${pageHelper.pageNum}+'&pageSize='+pageSize
             		// 페이지 이동이 된 후에 검색한 학생만 남아있는 페이지가 아닌 기존 페이지로 돌아가는 방법 찾기
             		// 방법1. 검색을하고 keyCode==13을 누르면 $('searchvar').val()의 값은 남아 있어야한다.
             		// 		keyCode==8(Backspace)눌렀을때 $('searchvar').val()의 값이 null일 경우 모든데이터를 가져오게 만들어야한다.
+              	
               }
             },
             error: function (request, statis, error) {
               console.log(error);
             },
           })
+        }
+    })
+    
+    $(document).keydown(function(key){
+        if(key.keyCode == 27){
+            $('.update-popup').css('display', 'none')
+            $('.write-popup').css('display', 'none')
+            return false;
         }
     })
   </script>
