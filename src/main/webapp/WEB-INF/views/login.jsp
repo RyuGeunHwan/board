@@ -77,6 +77,44 @@
           },
         });
       });
+      
+      $('#userPassword').keyup(function(key){
+		if(key.keyCode == 13){
+			let id = $("#userId").val();
+	          let password = $("#userPassword").val();
+
+	          var jsonData = {
+	            studentsName: id,
+	            studentsPassword: password,
+	          };
+	          
+	          if(id == '' || password == ''){
+	        	  alert('모든 정보를 입력하세요!')
+	        	  return false;
+	          }
+    	  $.ajax({
+              url: "/api/v1/login",
+              type: "POST",
+              contentType: "application/json",
+              dataType: "json",
+              data: JSON.stringify(jsonData),
+              success: function (response) {
+                console.log(response);
+                if (response !== null) {
+                  if (response) {
+                    // location.href : 페이지 이동 함수
+                    location.href = "/board?pageNum=1&pageSize=5";
+                  } else {
+                    alert("비밀번호 혹은 이름이 틀렸습니다.");
+                  }
+                }
+              },
+              error: function (request, statis, error) {
+                console.log(error);
+              },
+            });
+    	  }
+      })
     </script>
   </body>
 </html>

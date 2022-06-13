@@ -36,6 +36,8 @@ public class BoardController {
 		PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(list);
 		
 		map.addAttribute("pageHelper", pageInfo);
+		// JSP로 넘겨주는 문법.
+		// key와 value로 이루어져 있음.
 		
 		return "board";
 	}
