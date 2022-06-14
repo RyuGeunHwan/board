@@ -1,148 +1,149 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- MyBatis에게 Mapper 경로를 적어야한다. -->
-<mapper namespace="com.dw.board.mapper.BoardMapper"><!-- mapper위치 경로-->
+<mapper namespace="com.dw.board.mapper.BoardMapper"><!-- mapper위치 경로 -->
 
-<!-- 게시판 저장 -->
-<insert id="insertBoard">
-INSERT INTO board
-(
-title,
-content
-<if test="studentsId != 0">
-,students_id
-</if>
-)
-VALUES
-(
-#{title},
-#{content}
-<if test="studentsId != 0">
-,#{studentsId}
-</if>
-)
-<!--BoardVO의 studentsId는 FK기 때문에 기본키를 가진 student테이블에도 없는 값을 board테이블에서도 가질 수 없다.
-즉, students테이블에 있는 students_id가 있는 데이터의 값만 board테이블에서 insert할 수 있다는 것이다.
- 마이크 M은 다음과 같이 썼다.“FK가 작동하는 방식은 해당 테이블에 참조 된 테이블의 기본 키 열에도없는 값을 가질 수 없다는 것입니다.”  -->
-</insert>
-
-
-<select id="selectBoardTest" resultType="map">
-SELECT
-	b.board_id AS boardId,
-	b.students_id AS studentsId,
-	s.students_name AS studentsName,
-	title,
-	content,
-	IFNULL(DATE_FORMAT(b.update_at,'%Y-%m-%d'), '-') AS updateAt,
-	DATE_FORMAT(b.create_at,'%Y-%m-%d') AS createAt,
-	cnt
-FROM board b inner join students s
-	 ON b.students_id = s.students_id
-LIMIT #{pageNum},#{pageSize}
-</select>
-
-<!-- join으로 조회할 때 resultType을 map으로 -->
-<select id="selectBoard" resultType="map">
-SELECT
-	b.board_id AS boardId,
-	b.students_id AS studentsId,
-	s.students_name AS studentsName,
-	title,
-	content,
-	IFNULL(DATE_FORMAT(b.update_at,'%Y-%m-%d'), '-') AS updateAt,
-	DATE_FORMAT(b.create_at,'%Y-%m-%d') AS createAt,
-	cnt
-FROM board b inner join students s
-on b.students_id = s.students_id
-</select>
-
-<select id="selectAllBoardTotalCount" resultType="int">
-SELECT
-	COUNT(*) AS boardCnt
-FROM 
-	board AS b
-	INNER JOIN students AS s
-	ON b.students_id = s.students_id
-</select>
-
-<update id="updateBoard">
-UPDATE board 
-SET
-	title = #{title},
-	update_at = date_format(now(), '%Y-%m-%d'),
-	content = #{content}
-WHERE board_id = #{boardId}
-</update>
-
-<delete id="removeBoard">
-DELETE from board 
-WHERE board_id = #{id}
-</delete>
-
-<!-- 특정 게시글 상세보기 -->
-<select id="detailBoard" resultType="BoardVO">
-SELECT 
-	title,
-	content,
-	create_at,
-	cnt
-FROM board
-WHERE
-board_id = #{id}
-</select>
-
-<!-- 조회 수 업데이트 -->
-<update id="updateBoardViews">
-UPDATE 
-	board
-SET 
-	cnt = #{cnt}
-WHERE 
-	board_id = #{boardId}
-</update>
-<!-- #{boardId} : 클릭한 해당 게시글 -->
-<!-- #{cnt} :증가한 카운트 수 -->
+	<!-- 게시판 저장 -->
+	<insert id="insertBoard">
+		INSERT INTO board
+		(
+		title,
+		content
+		<if test="studentsId != 0">
+			,students_id
+		</if>
+		)
+		VALUES
+		(
+		#{title},
+		#{content}
+		<if test="studentsId != 0">
+			,#{studentsId}
+		</if>
+		)
+		<!--BoardVO의 studentsId는 FK기 때문에 기본키를 가진 student테이블에도 없는 값을 board테이블에서도 
+			가질 수 없다. 즉, students테이블에 있는 students_id가 있는 데이터의 값만 board테이블에서 insert할 수 
+			있다는 것이다. 마이크 M은 다음과 같이 썼다.“FK가 작동하는 방식은 해당 테이블에 참조 된 테이블의 기본 키 열에도없는 값을 가질 
+			수 없다는 것입니다.” -->
+	</insert>
 
 
+	<select id="selectBoardTest" resultType="map">
+		SELECT
+		b.board_id AS boardId,
+		b.students_id AS studentsId,
+		s.students_name AS studentsName,
+		title,
+		content,
+		IFNULL(DATE_FORMAT(b.update_at,'%Y-%m-%d'), '-') AS updateAt,
+		DATE_FORMAT(b.create_at,'%Y-%m-%d') AS createAt,
+		cnt
+		FROM board b inner join students s
+		ON b.students_id = s.students_id
+		LIMIT #{pageNum},#{pageSize}
+	</select>
 
-<select id="selectSearchBoardList" resultType="map">
-SELECT
-	b.board_id AS boardId,
-	b.students_id AS studentsId,
-	s.students_name AS studentsName,
-	title,
-	content,
-	IFNULL(DATE_FORMAT(b.update_at,'%Y-%m-%d'), '-') AS updateAt,
-	DATE_FORMAT(b.create_at,'%Y-%m-%d') AS createAt,
-	b.cnt AS cnt
-FROM board b inner join students s
-on b.students_id = s.students_id
-WHERE s.students_name LIKE CONCAT('%',#{studentsName},'%')
-</select>
+	<!-- join으로 조회할 때 resultType을 map으로 -->
+	<select id="selectBoard" resultType="map">
+		SELECT
+		b.board_id AS boardId,
+		b.students_id AS studentsId,
+		s.students_name AS studentsName,
+		title,
+		content,
+		IFNULL(DATE_FORMAT(b.update_at,'%Y-%m-%d'), '-') AS updateAt,
+		DATE_FORMAT(b.create_at,'%Y-%m-%d') AS createAt,
+		cnt
+		FROM board b inner join students s
+		on b.students_id = s.students_id
+	</select>
 
-<!-- 게시판 통계 함수 : 학생수, 게시글 수, 작성자 수, 총 조회 수 -->
-<select id="selectBoardStatistics" resultType="map">
-select 
-	count(*) as studentsCnt,
-	(
-	select
-	count(*)
-	from board
-	) as boardCnt,
-	(
-	select
-	count(distinct(b.students_id))
-	from students as s
-	inner join board as b
-	on s.students_id = b.students_id
-	) as writerCnt,
-	(
-	select sum(cnt)
-	from board
-	) as viewsCnt
-from 
-	students
-</select>
+	<select id="selectAllBoardTotalCount" resultType="int">
+		SELECT
+		COUNT(*) AS boardCnt
+		FROM
+		board AS b
+		INNER JOIN students AS s
+		ON b.students_id = s.students_id
+	</select>
+
+	<update id="updateBoard">
+		UPDATE board
+		SET
+		title = #{title},
+		update_at = date_format(now(), '%Y-%m-%d'),
+		content = #{content}
+		WHERE board_id = #{boardId}
+	</update>
+
+	<delete id="removeBoard">
+		DELETE from board
+		WHERE board_id = #{id}
+	</delete>
+
+	<!-- 특정 게시글 상세보기 -->
+	<select id="detailBoard" resultType="BoardVO">
+		SELECT
+		title,
+		content,
+		create_at,
+		cnt
+		FROM board
+		WHERE
+		board_id = #{id}
+	</select>
+
+	<!-- 조회 수 업데이트 -->
+	<update id="updateBoardViews">
+		UPDATE
+		board
+		SET
+		cnt = #{cnt}
+		WHERE
+		board_id = #{boardId}
+	</update>
+	<!-- #{boardId} : 클릭한 해당 게시글 -->
+	<!-- #{cnt} :증가한 카운트 수 -->
+
+
+
+	<select id="selectSearchBoardList" resultType="map">
+		SELECT
+		b.board_id AS boardId,
+		b.students_id AS studentsId,
+		s.students_name AS studentsName,
+		title,
+		content,
+		IFNULL(DATE_FORMAT(b.update_at,'%Y-%m-%d'), '-') AS updateAt,
+		DATE_FORMAT(b.create_at,'%Y-%m-%d') AS createAt,
+		b.cnt AS cnt
+		FROM board b inner join students s
+		on b.students_id = s.students_id
+		WHERE s.students_name LIKE CONCAT('%',#{studentsName},'%')
+	</select>
+
+	<!-- 게시판 통계 함수 : 학생수, 게시글 수, 작성자 수, 총 조회 수 -->
+	<select id="selectBoardStatistics" resultType="map">
+		select
+		count(*) as studentsCnt,
+		(
+		select
+		count(*)
+		from board
+		) as boardCnt,
+		(
+		select
+		count(distinct(b.students_id))
+		from students as s
+		inner join board as b
+		on s.students_id = b.students_id
+		) as writerCnt,
+		(
+		select sum(cnt)
+		from board
+		) as viewsCnt
+		from
+		students
+	</select>
 
 
 

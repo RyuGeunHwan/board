@@ -1,94 +1,95 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- MyBatis에게 Mapper 경로를 적어야한다. -->
-<mapper namespace="com.dw.board.mapper.StudentsMapper"><!-- mapper위치 경로-->
+<!-- mapper위치 경로 -->
+<mapper namespace="com.dw.board.mapper.StudentsMapper">
+	<insert id="insertStudents">
+		INSERT INTO students
+		(
+		students_name,
+		students_password
+		)
+		VALUES
+		(
+		#{studentsName},
+		#{studentsPassword}
+		)
+	</insert>
 
-<insert id="insertStudents">
-INSERT INTO students
-(
-	students_name,
-	students_password
-)
-VALUES
-(
-	#{studentsName},
-	#{studentsPassword}
-)
-</insert>
+	<!-- 전체 학생 조회 -->
+	<select id="selectAllStudentsList" resultType="map">
+		SELECT
+		<!-- Mapper의 메소드에서 파라미터를 VO클래스로 받고 있기때문에 -->
+		<!--별칭을 주는 이유는 studentsVO의 필드변수명과 같아야함. -->
+		students_id AS studentsId,
+		students_name AS studentsName,
+		students_password AS studentsPassword,
+		date_format(create_at, '%Y-%m-%d') AS createAt
+		FROM students
 
-<!-- 전체 학생 조회 -->
-<select id="selectAllStudentsList" resultType="map">
-SELECT 
-<!-- Mapper의 메소드에서 파라미터를 VO클래스로 받고 있기때문에 -->
-<!-- 별칭을 주는 이유는 studentsVO의 필드변수명과 같아야함. -->
-	students_id AS studentsId,
-	students_name AS studentsName,
-	students_password AS studentsPassword,
-	date_format(create_at, '%Y-%m-%d') AS createAt
-FROM students
-
-</select>
+	</select>
 
 
-<!-- resultType ==  returnType -->
-<!-- Map<>으로 데이터를 받을 경우에는 resultType(==returnType)을 map으로 해주어야 한다. -->
-<select id="selectAllStudentsListByMap" resultType="map">
-SELECT 
-	students_id AS studentsId,
-	students_name AS studentsName,
-	students_password AS studentsPassword,
-	date_format(create_at, '%Y-%m-%d') AS createAt
-FROM students
-</select>
+	<!-- resultType == returnType -->
+	<!-- Map<>으로 데이터를 받을 경우에는 resultType(==returnType)을 map으로 해주어야 한다. -->
+	<select id="selectAllStudentsListByMap" resultType="map">
+		SELECT
+		students_id AS studentsId,
+		students_name AS studentsName,
+		students_password AS studentsPassword,
+		date_format(create_at, '%Y-%m-%d') AS createAt
+		FROM students
+	</select>
 
-<!-- id로 특정 학생 조회 -->
-<select id="selectStudents" resultType="map">
-SELECT 
-	students_id AS studentsId,
-	students_name AS studentsName,
-	students_password AS studentsPassword,
-	date_format(create_at, '%Y-%m-%d') AS createAt
-FROM students
-WHERE 
-students_id = #{studentsId}
-</select>
+	<!-- id로 특정 학생 조회 -->
+	<select id="selectStudents" resultType="map">
+		SELECT
+		students_id AS studentsId,
+		students_name AS studentsName,
+		students_password AS studentsPassword,
+		date_format(create_at, '%Y-%m-%d') AS createAt
+		FROM students
+		WHERE
+		students_id = #{studentsId}
+	</select>
 
-<!-- 특정학생 삭제 -->
-<delete id="deleteStudents">
-DELETE FROM students
-WHERE students_id = #{studentsId}
-</delete>
+	<!-- 특정학생 삭제 -->
+	<delete id="deleteStudents">
+		DELETE FROM students
+		WHERE students_id = #{studentsId}
+	</delete>
 
-<!-- 특정학생 수정 -->
-<update id="updateStudents">
-UPDATE 
-	students
-SET 
-	students_name = #{studentsName},
-	students_password = #{studentsPassword}
-WHERE 
-	students_id = #{studentsId}
-</update>
+	<!-- 특정학생 수정 -->
+	<update id="updateStudents">
+		UPDATE
+		students
+		SET
+		students_name = #{studentsName},
+		students_password = #{studentsPassword}
+		WHERE
+		students_id = #{studentsId}
+	</update>
 
-<select id="selectStudentsOne" resultType="StudentsVO">
-SELECT 
-	students_id AS studentsId,
-	students_name AS studentsName,
-	students_password AS studentsPassword,
-	create_at AS createAt
-FROM students
-WHERE 
-students_name = #{studentsName}
-</select>
-<!-- 검색창으로 학생 검색 -->
-<select id="selectStudentsSearch" resultType="map">
-SELECT
-	students_id AS studentsId,
-	students_name AS studentsName,
-	date_format(create_at, '%Y-%m-%d') AS createAt
-FROM 
-	students
-WHERE
-	 students_name LIKE CONCAT('%',#{studentsName},'%')
-</select>
-
+	<select id="selectStudentsOne" resultType="StudentsVO">
+		SELECT
+			students_id AS studentsId,
+			students_name AS studentsName,
+			students_password AS studentsPassword,
+			create_at AS createAt
+		FROM 
+			students
+		WHERE
+			students_name = #{studentsName}
+	</select>
+	<!-- 검색창으로 학생 검색 -->
+	<select id="selectStudentsSearch" resultType="map">
+		SELECT
+			students_id AS studentsId,
+			students_name AS studentsName,
+			date_format(create_at, '%Y-%m-%d') AS createAt
+		FROM
+			students
+		WHERE
+			students_name LIKE CONCAT('%',#{studentsName},'%')
+	</select>
+	
 </mapper>
