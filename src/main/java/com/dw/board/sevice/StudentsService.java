@@ -3,6 +3,8 @@ package com.dw.board.sevice;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class StudentsService {
 	}
 	// 가입된 학생인지 아닌지 여부 체크(가입된 학생데이터와 가입할 학생데이터 비교)
 		@Transactional(rollbackFor = {Exception.class})
-		public boolean isStudents(StudentsVO vo) { // html에서 가져온 데이터
+		public boolean isStudents(StudentsVO vo, HttpSession httpSession) { // html에서 가져온 데이터
 			
 			StudentsVO student = studentsMapper.selectStudentsOne(vo);
 			// Mapper에 있는 메소드 파라미터에 쿼리의 결과(암호화된 password를 담은 vo)를 받아서 
@@ -53,16 +55,18 @@ public class StudentsService {
 			}
 			//inputPassword : 아직 암호화 되기전 비밀번호, password : 암호화된 비밀번호
 			String inputPassword = vo.getStudentsPassword();//HTML에서 받아온 비밀번호
-			String password = student.getStudentsPassword();//DB에서 가져온 비밀번호
+			String dbPassword = student.getStudentsPassword();//DB에서 가져온 비밀번호
 			System.out.println("HTML에서 보낸 비밀번호 => "+inputPassword);
-			System.out.println("암호화된 DB 데이터 비밀번호 => "+password);
-			if(passwordEncoder.matches(inputPassword, password)) { //비밀번호 체크, 파라미터 값이 같다면(true) if문 실행
+			System.out.println("암호화된 DB 데이터 비밀번호 => "+dbPassword);
+			if(!passwordEncoder.matches(inputPassword, dbPassword)) { //비밀번호 체크, 파라미터 값이 같다면(true) if문 실행
 				//matches함수는 암호화된 비밀번호와 입력한 비밀번호(암호화되기 전 비밀번호)를 비교해주는 메소드이다.
 				//if문에는 inputPassword와 password를 비교하여 비밀번호가 겹치지 않게 비교해주는 matche함수 사용!
-				return true;
-			}
-			
-			return false;
+				return false;
+				
+			}			
+			httpSession.setAttribute("studentsId", student.getStudentsId());
+			httpSession.setAttribute("studentsName", student.getStudentsName());
+			return true;
 		}
 	
 	

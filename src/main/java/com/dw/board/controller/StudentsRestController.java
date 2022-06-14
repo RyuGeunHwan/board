@@ -37,12 +37,7 @@ public class StudentsRestController {
 	@CrossOrigin
 	@PostMapping("/login")
 	public boolean callIsLogin(@RequestBody StudentsVO vo, HttpSession httpSession) {//HttpSession : 세션 저장 클래스
-		boolean isLogin = studentsSevice.isStudents(vo);// 로그인을 할때 입력한 비밀번호와 DB에 있는 비밀번호가 일치하는지 확인하는 boolean형 메소드
-		if(isLogin) {
-			//HttpSession 저장하는 방식 : Key, value
-			// public void setAttribute(String name, Object value); => HttpSession 클래스에 있는 메소드
-			httpSession.setAttribute("name", vo.getStudentsName());
-		}
+		boolean isLogin = studentsSevice.isStudents(vo,httpSession);// 로그인을 할때 입력한 비밀번호와 DB에 있는 비밀번호가 일치하는지 확인하는 boolean형 메소드
 		return isLogin;
 	}
 	

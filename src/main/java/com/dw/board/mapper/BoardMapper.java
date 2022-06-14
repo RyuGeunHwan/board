@@ -85,4 +85,25 @@ public interface BoardMapper {
 	 * 방법2. Map으로 받는 방법
 	 */
 	public Map<String, Object> selectBoardStatistics();
+	
+	
+	/**
+		 * @Method Name : selectAllBoardTotal
+		 * @return : Map<String,Object>
+		 * @author : geunhwan Ryu
+		 * @date : 2022. 6. 14.
+		 *comment : 게시글 전체 cnt 조회
+		 */
+	public int selectAllBoardTotalCount();
+	
+	/**
+		 * @Method Name : selectBoardTest
+		 * @return : Map<String,Object>
+		 * @author : geunhwan Ryu
+		 * @date : 2022. 6. 14.
+		 *comment : test
+		 */
+	public List<Map<String, Object>> selectBoardTest(@Param("pageNum")int pageNum,@Param("pageSize")int pageSize);
+	
+	
 }

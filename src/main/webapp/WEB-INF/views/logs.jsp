@@ -186,7 +186,7 @@
   ></script>
   <script
     type="text/javascript"
-    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	195c9f3209ff194e99dd27723065dab3"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=195c9f3209ff194e99dd27723065dab3"
   ></script>
   <script>
     let list = document.querySelectorAll(".navigation li");
@@ -205,6 +205,11 @@
       // 글 수정 팝업 닫기 누르면 팝업창 닫기
     	$(".logs-popup").css("display", "none");
     });
+    $('.logs-popup').keyup(function(key){
+    	if(key.keyCode==27){
+    		$(".logs-popup").css("display", "none");
+    	}
+    })
   </script>
   <script>
   	$(".logs-popup").css("display", "none");
@@ -268,26 +273,7 @@
 	    }
 
    
-    function getLogsList(pageNum, pageSize) {
-        $.ajax({
-          url:
-            "/api/v1/logs?pageNum=" +
-            pageNum +
-            "&pageSize=" +
-            pageSize,
-          type: "GET",
-          dateType: "json",
-          success: function (response) {
-            if (response != null) {
-            	
-            }
-          },
-          error: function (request, status, error) {
-            console.log(error);
-          },
-          
-        });
-      }
+    
 
     
   </script>

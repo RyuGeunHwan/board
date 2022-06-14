@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,57 +27,72 @@ public class Interceptor implements HandlerInterceptor {
 	private LogsService logsService;
 	
 	// preHandle : controller에 도착하기 전에 요청을 가로채는 함수
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+		@Override
+		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+				throws Exception {
+			
+			String url = request.getRequestURI();
+			String ip = request.getHeader("X-Forwarded-For");
+			String httpMethod = request.getMethod();
+			if (ip == null) ip = request.getRemoteAddr();
+		    System.out.println("접속한 IP ==> "+ip);
+		    System.out.println("요청 받은 URL ==> "+url);
+		    System.out.println("HTTP Method ==> "+httpMethod);
+		    
+		    SimpleDateFormat formatter = 
+		    		new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		    // ***Locale.KOREA 사용 이유 : 한국 시간으로 강제로 맞추기 위해서 사용
+		    String time = formatter.format(Calendar.getInstance().getTime());
+		    
+		    System.out.println("time ==> "+time);
+		    
+		    // insert는 interceptor에서 실행 <-> select는 controller에서 실행
+		    LogVO vo = new LogVO();
+		    vo.setUrl(url);
+		    vo.setIp(ip);
+		    vo.setHttpMethod(httpMethod);
+		    vo.setLatitude("36.3519375");
+		    vo.setLongitude("127.3781875");
+		    vo.setCreateAt(time);
+		    logsService.setLogs(vo);
+		    
+		    // 세션 체크 로직
+		    HttpSession session = request.getSession();
+		    if(session.getAttribute("studentsId") != null) {
+			    int studentsId = (int)session.getAttribute("studentsId");
+			    String studentsName = (String)session.getAttribute("studentsName");
+			    System.out.println("세션에서 가져온 id ==>"+ studentsId);
+			    System.out.println("세션에서 가져온 name ==>"+ studentsName);
+		    }
+		    if(session.getAttribute("studentsId") == null) {
+		    	response.sendRedirect("/login");//세션에 값이 없으면 /login 경로로 redirect!
+		    	// redirect : 다시 돌아가기
+		    }
+		    
+			return true;
+		}
+//		    출력 결과
+//		    접속한 IP ==> 0:0:0:0:0:0:0:1
+//		    요청 받은 URL ==> /api/v1/board
+//		    HTTP Method ==> GET
+//		    time ==> 2022-06-03 10:09:55
 		
-		String url = request.getRequestURI();
-		String ip = request.getHeader("X-Forwarded-For");
-		String httpMethod = request.getMethod();
-		if (ip == null) ip = request.getRemoteAddr();
-	    System.out.println("접속한 IP ==> "+ip);
-	    System.out.println("요청 받은 URL ==> "+url);
-	    System.out.println("HTTP Method ==> "+httpMethod);
-	    
-	    SimpleDateFormat formatter = 
-	    		new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-	    // ***Locale.KOREA 사용 이유 : 한국 시간으로 강제로 맞추기 위해서 사용
-	    String time = formatter.format(Calendar.getInstance().getTime());
-	    
-	    System.out.println("time ==> "+time);
-	    
-	    // insert는 interceptor에서 실행 <-> select는 controller에서 실행
-	    LogVO vo = new LogVO();
-	    vo.setUrl(url);
-	    vo.setIp(ip);
-	    vo.setHttpMethod(httpMethod);
-	    vo.setLatitude("36.3519375");
-	    vo.setLongitude("127.3781875");
-	    vo.setCreateAt(time);
-	    logsService.setLogs(vo);
-	    
-		return true;
-	}
-//	    출력 결과
-//	    접속한 IP ==> 0:0:0:0:0:0:0:1
-//	    요청 받은 URL ==> /api/v1/board
-//	    HTTP Method ==> GET
-//	    time ==> 2022-06-03 10:09:55
+
+		@Override
+		public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+				ModelAndView modelAndView) throws Exception {
+			
+			
+		}
+
+		@Override
+		public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+				throws Exception {
+			
+			
+		}
 	
-
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
-		
-		
-	}
-
-	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-			throws Exception {
-		
-		
-	}
+	
 
 	
 	

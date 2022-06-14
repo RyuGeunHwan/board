@@ -1,7 +1,10 @@
 package com.dw.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +32,8 @@ public class BoardController {
 	public String callBoardPage(
 			ModelMap map,
 			@RequestParam("pageNum") int pageNum,
-			@RequestParam("pageSize") int pageSize) {
+			@RequestParam("pageSize") int pageSize,
+			HttpSession session) {
 		
 		List<Map<String,Object>> list = boardService.getBoardList(pageNum, pageSize);
 		
@@ -38,6 +42,15 @@ public class BoardController {
 		map.addAttribute("pageHelper", pageInfo);
 		// JSP로 넘겨주는 문법.
 		// key와 value로 이루어져 있음.
+		
+		int studentsId = (int)session.getAttribute("studentsId");
+		String studentsName = (String)session.getAttribute("studentsName");
+		Map<String, Object> studentsMap = new HashMap<String, Object>();
+		
+		studentsMap.put("studentsId", studentsId);
+		studentsMap.put("studentsName", studentsName);
+		
+		map.addAttribute("studentsMap", studentsMap);
 		
 		return "board";
 	}
