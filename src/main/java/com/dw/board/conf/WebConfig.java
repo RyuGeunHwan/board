@@ -23,7 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
 				"/join",
 				"/api/v1/login",
 				"/resources/static/css/*",
-				"/resources/static/js/*");
+				"/resources/static/js/*",
+				"/resources/static/images/*",
+				"/error");
 		// .excludePathPatterns를 설정하게 되면 중간에 interceptor되지 않는다.
 	}
 	

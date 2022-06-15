@@ -9,7 +9,7 @@
 		longitude,
 		url,
 		http_method,
-		create_at
+		DATE_FORMAT(create_at,'%Y-%m-%d %H:%i:%s') AS createAt
 		)
 		VALUES
 		(
@@ -31,7 +31,7 @@
 		longitude,
 		url,
 		http_method,
-		create_at
+		DATE_FORMAT(create_at,'%Y-%m-%d %H:%i:%s') AS createAt
 		FROM
 		board_logs
 		<if test="logId != 0">

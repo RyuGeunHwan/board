@@ -115,7 +115,7 @@
 				    			<td>${item.ip}</td>
 				    			<td>${item.url}</td>
 				    			<td>${item.http_method}</td>	
-				    			<td>${item.create_at}</td>	 
+				    			<td>${item.createAt}</td>	 
   							</tr>
 						</c:forEach>
 	 				</c:when>
@@ -241,7 +241,7 @@
 	          var longitude = response.longitude;
 
 	          $("#ip").val(response.ip);
-	          $("#createAt").val(response.create_at);
+	          $("#createAt").val(response.createAt);
 
 	          // 카카오맵
 	          var mapContainer = document.getElementById("map"), // 지도를 표시할 div
