@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,6 +23,9 @@ import com.dw.board.vo.LogVO;
 @Component // @Component : 본인이 만든 클래스를 Bean으로 등록할 때 쓰는 어노테이션
 			// @Bean : Spring에서 제공해주는 클래스, 외부 라이브러리를 Bean으로 등록할 때 쓰는 어노 테이션
 public class Interceptor implements HandlerInterceptor {
+	
+	// ip,url,httpMethod,time 실무에서 확인하는 방법
+	private static final Logger logger = LoggerFactory.getLogger(Interceptor.class);
 
 	@Autowired
 	private LogsService logsService;
@@ -31,20 +37,29 @@ public class Interceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
+		// url
 		String url = request.getRequestURI();
+		// ip
 		String ip = request.getHeader("X-Forwarded-For");
+		// httpMethod
 		String httpMethod = request.getMethod();
 		if (ip == null)
 			ip = request.getRemoteAddr();
-		System.out.println("접속한 IP ==> " + ip);
-		System.out.println("요청 받은 URL ==> " + url);
-		System.out.println("HTTP Method ==> " + httpMethod);
-
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 		// ***Locale.KOREA 사용 이유 : 한국 시간으로 강제로 맞추기 위해서 사용
 		String time = formatter.format(Calendar.getInstance().getTime());
-
-		System.out.println("time ==> " + time);
+		
+		// ip,url,httpMethod,time 실무에서 확인하는 방법
+		logger.info("★client IP : "+ip);
+		logger.info("★client URL : "+url);
+		logger.info("★client HTTP Method : "+httpMethod);
+		logger.info("★client time : "+time);
+		
+		//실무에서는 println으로 확인하지 않음.
+//		System.out.println("접속한 IP ==> " + ip);
+//		System.out.println("요청 받은 URL ==> " + url);
+//		System.out.println("HTTP Method ==> " + httpMethod);
+//		System.out.println("time ==> " + time);
 
 		// insert는 interceptor에서 실행 <-> select는 controller에서 실행
 		LogVO vo = new LogVO();
@@ -55,7 +70,7 @@ public class Interceptor implements HandlerInterceptor {
 		vo.setLongitude("127.3781875");
 		vo.setCreateAt(time);
 		logsService.setLogs(vo);
-
+		
 		// 세션 체크 로직
 		HttpSession session = request.getSession();// controller에서 요청받은 데이터를 session(변수)에 대입.
 		if (session.getAttribute("studentsId") != null) {
@@ -67,6 +82,7 @@ public class Interceptor implements HandlerInterceptor {
 		if (session.getAttribute("studentsId") == null) {
 			response.sendRedirect("/login");// 세션에 값이 없으면 /login 경로로 redirect!
 			// redirect : 다시 돌아가기
+			return false;
 		}
 
 		return true;

@@ -2,6 +2,15 @@
 application:
    version: v0.0.1
    title: 류근환 짱!!!
+   
+## 포트번호 수정
+server:
+   port: 8080
+   
+#개발 버전 설정(개발환경인지 운영환경인지)
+spring: 
+   profiles:
+      active: dev # env(운영모드) or dev(개발모드) 입력 => DB의 주소가 다르기때문에 저장소가 다르다.
 
 
 #MyBatis 설정
@@ -12,9 +21,42 @@ mybatis:
    type-aliases-package: com.dw.board.vo
    #데이터를 받을 패키지 경로
 
+#PageHelper(페이징 처리)
+pagehelper:
+   #사용할 데이터베이스
+   helper-dialect: mysql
+   #범위를 넘어가는 page가 요청오면 가능한 값으로 변경
+   #0페이지를 조회하면 1페이지로, 13페이지까지 있는데 14페이지 요청이 들어오면 13페이지로 변경
+   reasonable: true
 
 #MySQL 접속 정보 설정
+--- 
 spring : 
+   profiles: env #운영모드를 의미
+   datasource :
+      initialization-mode : always
+      #  initialization-mode : always(실행시킨다) , never(실행시키지 않겠다.)
+      schema : classpath:init.sql
+      # schema(CREATE(== DDL=auto commit))를 실행할 파일 경로 설정
+      driver-class-name : com.mysql.cj.jdbc.Driver
+      url : jdbc:mysql://geunhwan-database.csvmiweunxhy.ap-northeast-2.rds.amazonaws.com:3306/dw?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC 
+      #접속하고 싶은 데이터베이스 url작성
+      username : admin 
+      #DBeaver username 작성
+      password : rmsghksdl1! 
+      #DBeaver password 작성성    
+   # JSP 경로 설정
+   mvc: 
+      view: 
+         prefix: /WEB-INF/views/
+         suffix: .jsp
+      #css,js,image 폴더 위치 설정
+      static-path-pattern: /resources/static/**
+      
+      
+--- 
+spring : 
+   profiles: dev #개발모드를 의미
    datasource :
       initialization-mode : always
       #  initialization-mode : always(실행시킨다) , never(실행시키지 않겠다.)
@@ -34,13 +76,5 @@ spring :
          suffix: .jsp
       #css,js,image 폴더 위치 설정
       static-path-pattern: /resources/static/**
-#PageHelper
-pagehelper:
-   #사용할 데이터베이스
-   helper-dialect: mysql
-   #범위를 넘어가는 page가 요청오면 가능한 값으로 변경
-   #0페이지를 조회하면 1페이지로, 13페이지까지 있는데 14페이지 요청이 들어오면 13페이지로 변경
-   reasonable: true
-   
-   
+      
    #yaml 파일 안에 설정을 할 경우 계층표현(상,하위 구분)으로 Tab을 꼭 해주어야한다!

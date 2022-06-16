@@ -9,7 +9,7 @@
 		longitude,
 		url,
 		http_method,
-		DATE_FORMAT(create_at,'%Y-%m-%d %H:%i:%s') AS createAt
+		create_at
 		)
 		VALUES
 		(
@@ -18,7 +18,7 @@
 		#{longitude},
 		#{url},
 		#{httpMethod},
-		#{createAt}
+		now()
 		)
 	</insert>
 
