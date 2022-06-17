@@ -49,7 +49,7 @@ public class Interceptor implements HandlerInterceptor {
 		// ***Locale.KOREA 사용 이유 : 한국 시간으로 강제로 맞추기 위해서 사용
 		String time = formatter.format(Calendar.getInstance().getTime());
 		
-		// ip,url,httpMethod,time 실무에서 확인하는 방법
+		// ip,url,httpMethod,time 등 Interceptor 실무에서 확인하는 방법
 		logger.info("★client IP : "+ip);
 		logger.info("★client URL : "+url);
 		logger.info("★client HTTP Method : "+httpMethod);
