@@ -19,6 +19,8 @@ public class StudentsService {
 
 	@Autowired
 	private StudentsMapper studentsMapper;
+	
+	//Bean으로 등록되어 있는 메소드(WebsecurityConfig 클래스 참고)
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
