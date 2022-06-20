@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+	//@EnableWebSecurity을 WebSecurityConfigurerAdapter를 상속하는 객체에 붙여주면 SpringSecurityFilterChain에 등록된다.
+	
 	
 	//의존성 주입
 	@Bean
@@ -22,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		http.csrf().disable()
+		http.csrf().disable() //csrf(Cross site Request forgery) 보호기능
 		.formLogin().disable();
 	}
 
