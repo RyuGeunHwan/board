@@ -7,12 +7,12 @@ application:
 server:
    port: 8080
    
+   
 #개발 버전 설정(개발환경인지 운영환경인지)
 spring: 
    profiles:
-      active: env # env(운영환경)=> AWS DB or dev(개발환경)=> 컴퓨터자체(localhost) 입력 => DB의 주소가 다르기때문에 저장소가 다르다.
-
-
+      active: dev # env(운영환경)=> AWS DB or dev(개발환경)=> 컴퓨터자체(localhost) 입력 => DB의 주소가 다르기때문에 저장소가 다르다.
+      
 #MyBatis 설정
 mybatis:
    mapper-locations : classpath:/sqlmap/sqlmapper_*.xml 
