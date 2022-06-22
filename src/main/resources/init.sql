@@ -43,3 +43,26 @@ CREATE TABLE IF NOT EXISTS board_logs
 	create_at DATETIME COMMENT '접속 시간'
 	-- DEFAULT가 없는 이유는 서버에서 로직 실행 시간이 있어서 실제 접속시간과 DB에 저장되는 접속시간이 다를 수 있어서.
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- #DDL
+CREATE TABLE IF NOT EXISTS user
+(
+	user_no BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	id VARCHAR(20) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	name VARCHAR(20)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS role
+(
+	role_no INT NOT NULL PRIMARY KEY,
+	role_name varchar(20) NOT NULL  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS user_role
+(
+  user_no BIGINT NOT NULL,
+  role_no INT NOT NULL,
+  FOREIGN KEY (user_no) REFERENCES user (user_no),
+  FOREIGN KEY (role_no) REFERENCES role (role_no)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

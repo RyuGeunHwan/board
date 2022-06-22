@@ -29,19 +29,30 @@ pagehelper:
    #0페이지를 조회하면 1페이지로, 13페이지까지 있는데 14페이지 요청이 들어오면 13페이지로 변경
    reasonable: true
 
-#MySQL 접속 정보 설정
+  
+   # JSP 경로 설정
+   mvc: 
+      view: 
+         prefix: /WEB-INF/views/
+         suffix: .jsp
+      #css,js,image 폴더 위치 설정
+      static-path-pattern: /resources/static/**
+      
+
 --- 
 spring : 
    profiles: env #운영모드를 의미
    datasource :
       initialization-mode : always
       #  initialization-mode : always(실행시킨다) , never(실행시키지 않겠다.)
+      # never는 어플리케이션 실행시 sql파일을 읽지 않겠다 라는 뜻
+      # always는 어플리케이션 실행시 sql파일을 실행 하겠다 뜻
       schema : classpath:init.sql
       # schema(CREATE(== DDL=auto commit))를 실행할 파일 경로 설정
       driver-class-name : com.mysql.cj.jdbc.Driver
       url : jdbc:mysql://geunhwan-database.csvmiweunxhy.ap-northeast-2.rds.amazonaws.com:3306/dw?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC 
       #접속하고 싶은 데이터베이스 url작성
-      username : admin 
+      username : admin
       #DBeaver username 작성
       password : rmsghksdl1! 
       #DBeaver password 작성성    
