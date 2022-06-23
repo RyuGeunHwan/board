@@ -16,9 +16,4 @@ public interface LogsMapper {
 	
 	public List<Map<String, Object>> selectBoardLogs(int logId); // 접속이력 전체 조회
 
-
-
-
-
-
 }
